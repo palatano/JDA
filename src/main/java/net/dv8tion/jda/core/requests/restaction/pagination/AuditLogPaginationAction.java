@@ -58,7 +58,8 @@ public class AuditLogPaginationAction extends PaginationAction<AuditLogEntry, Au
 
     public AuditLogPaginationAction(Guild guild)
     {
-        super(guild.getJDA(), Route.Guilds.GET_AUDIT_LOGS.compile(guild.getId()), 1, 100, 100);
+        super(guild.getJDA(), AuditLogPaginationAction.class, 1, 100, 100);
+
         if (!guild.getSelfMember().hasPermission(Permission.VIEW_AUDIT_LOGS))
             throw new PermissionException(Permission.VIEW_AUDIT_LOGS);
         this.guild = guild;

@@ -90,8 +90,8 @@ public class JDAImpl implements JDA
     protected SelfUser selfUser;
     protected ShardInfo shardInfo;
     protected String token = null;
-    protected boolean audioEnabled;
-    protected boolean bulkDeleteSplittingEnabled;
+    protected final boolean audioEnabled;
+    protected final boolean bulkDeleteSplittingEnabled;
     protected boolean autoReconnect;
     protected long responseTotal;
     protected long ping = -1;

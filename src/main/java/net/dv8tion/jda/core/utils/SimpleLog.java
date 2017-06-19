@@ -77,7 +77,6 @@ public class SimpleLog
      *      If an IO error is encountered while dealing with the file. Most likely
      *      to be caused by a lack of permissions when creating the log folders or files.
      */
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void addFileLogs(File std, File err) throws IOException {
         if(std != null) {
             if (origStd == null)

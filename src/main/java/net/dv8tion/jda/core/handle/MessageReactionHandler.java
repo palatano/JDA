@@ -147,6 +147,9 @@ public class MessageReactionHandler extends SocketHandler
                     new PrivateMessageReactionAddEvent(
                             api, responseNumber,
                             user, reaction));
+            case VOICE:
+            case UNKNOWN:
+                break;
         }
 
         manager.handle(
@@ -177,6 +180,9 @@ public class MessageReactionHandler extends SocketHandler
                     new PrivateMessageReactionRemoveEvent(
                             api, responseNumber,
                             user, reaction));
+            case VOICE:
+            case UNKNOWN:
+                break;
         }
 
         manager.handle(

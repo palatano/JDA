@@ -50,9 +50,7 @@ public class PresenceImpl implements Presence
         this.api = jda;
     }
 
-
     /* -- Public Getters -- */
-
 
     @Override
     public JDA getJDA()
@@ -78,9 +76,7 @@ public class PresenceImpl implements Presence
         return idle;
     }
 
-
     /* -- Public Setters -- */
-
 
     @Override
     public void setStatus(OnlineStatus status)
@@ -183,9 +179,7 @@ public class PresenceImpl implements Presence
         this.game = gameObj == null ? null : game;
     }
 
-
     /* -- Impl Setters -- */
-
 
     public PresenceImpl setCacheStatus(OnlineStatus status)
     {
@@ -209,9 +203,7 @@ public class PresenceImpl implements Presence
         return this;
     }
 
-
     /* -- Internal Methods -- */
-
 
     public JSONObject getFullPresence()
     {
@@ -236,9 +228,7 @@ public class PresenceImpl implements Presence
         return gameObj;
     }
 
-
     /* -- Terminal -- */
-
 
     protected void update(JSONObject data)
     {

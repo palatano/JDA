@@ -15,6 +15,7 @@
  */
 package net.dv8tion.jda.core.entities.impl;
 
+import java.util.Objects;
 import net.dv8tion.jda.core.entities.Game;
 
 public class GameImpl implements Game
@@ -49,17 +50,15 @@ public class GameImpl implements Game
     }
 
     @Override
-    public boolean equals(Object o)
-    {
+    public boolean equals(Object o) {
         if (!(o instanceof GameImpl))
             return false;
 
         Game oGame = (Game) o;
-        if (oGame.getType() != type)
-            return false;
-        return type == oGame.getType()
-                && ((name == null && oGame.getName() == null) || (name != null && name.equals(oGame.getName())))
-                && ((url == null && oGame.getUrl() == null) || (url != null && url.equals(oGame.getUrl())));
+        return oGame.getType() == type
+                && type == oGame.getType()
+                && Objects.equals(name, oGame.getName())
+                && Objects.equals(url, oGame.getUrl());
     }
 
     @Override

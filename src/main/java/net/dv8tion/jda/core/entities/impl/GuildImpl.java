@@ -662,6 +662,8 @@ public class GuildImpl implements Guild
             return true;
         switch (verificationLevel)
         {
+            case VERY_HIGH:
+                return true; // TODO: handle VERY_HIGH verification setting (mobile)
             case HIGH:
                 if(ChronoUnit.MINUTES.between(getSelfMember().getJoinDate(), OffsetDateTime.now()) < 10)
                     break;
@@ -674,6 +676,10 @@ public class GuildImpl implements Guild
             case NONE:
                 canSendVerification = true;
                 return true;
+            case UNKNOWN:
+                return true; // we don't know, so just try it
+            default:
+                break;
         }
         return false;
     }
@@ -808,7 +814,6 @@ public class GuildImpl implements Guild
     {
         return emotes;
     }
-
 
     // -- Object overrides --
 

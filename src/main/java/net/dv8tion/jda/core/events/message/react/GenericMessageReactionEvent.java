@@ -23,8 +23,8 @@ import net.dv8tion.jda.core.events.message.GenericMessageEvent;
 
 public class GenericMessageReactionEvent extends GenericMessageEvent
 {
-    protected User issuer;
-    protected MessageReaction reaction;
+    protected final User issuer;
+    protected final MessageReaction reaction;
 
     public GenericMessageReactionEvent(JDA api, long responseNumber, User user, MessageReaction reaction)
     {

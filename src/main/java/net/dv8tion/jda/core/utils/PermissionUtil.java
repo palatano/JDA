@@ -17,7 +17,6 @@ package net.dv8tion.jda.core.utils;
 
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.*;
-import net.dv8tion.jda.core.entities.impl.AbstractChannelImpl;
 import net.dv8tion.jda.core.entities.impl.GuildImpl;
 import net.dv8tion.jda.core.entities.impl.PermissionOverrideImpl;
 import org.apache.commons.collections4.CollectionUtils;
@@ -87,7 +86,7 @@ public class PermissionUtil
         List<Role> issuerRoles = issuer.getRoles();
         return !issuerRoles.isEmpty() && canInteract(issuerRoles.get(0), target);
     }
-    
+
     /**
      * Checks if one given Role can interact with a 2nd given Role - in a permission sense (kick/ban/modify perms).
      * This only checks the Role-Position and does not check the actual permission (kick/ban/manage_role/...)
@@ -382,8 +381,6 @@ public class PermissionUtil
             // Owner effectively has all permissions
             return Permission.ALL_PERMISSIONS;
 
-        final AbstractChannelImpl<?> abstractChannel = (AbstractChannelImpl<?>) channel;
-        final Guild guild = member.getGuild();
         long permission = getEffectivePermission(member) | getExplicitPermission(channel, member);
 
         AtomicLong allow = new AtomicLong(0);

@@ -42,7 +42,6 @@ public class AccountManager
         this.updatable = new AccountManagerUpdatable(selfUser);
     }
 
-
     /**
      * The {@link net.dv8tion.jda.core.JDA JDA} instance of this AccountManager
      *

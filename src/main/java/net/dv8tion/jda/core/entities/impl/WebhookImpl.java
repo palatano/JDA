@@ -46,7 +46,6 @@ public class WebhookImpl implements Webhook
     private User user;
     private String token;
 
-
     public WebhookImpl(TextChannel channel, long id)
     {
         this.channel = channel;

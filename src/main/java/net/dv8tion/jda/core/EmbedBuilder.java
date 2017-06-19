@@ -58,7 +58,7 @@ public class EmbedBuilder
     {
         this(null);
     }
-    
+
     /**
      * Creates an EmbedBuilder using fields in an existing embed.
      *
@@ -83,7 +83,7 @@ public class EmbedBuilder
                 fields.addAll(embed.getFields());
         }
     }
-    
+
     /**
      * Returns a {@link net.dv8tion.jda.core.entities.MessageEmbed MessageEmbed}
      * that has been checked as being valid for sending.
@@ -100,7 +100,7 @@ public class EmbedBuilder
         if (description.length() > MessageEmbed.TEXT_MAX_LENGTH)
             throw new IllegalStateException(String.format("Description is longer than %d! Please limit your input!", MessageEmbed.TEXT_MAX_LENGTH));
         final String description = this.description.length() < 1 ? null : this.description.toString();
-        
+
         return new MessageEmbedImpl().setTitle(title)
                 .setUrl(url)
                 .setDescription(description)
@@ -112,7 +112,7 @@ public class EmbedBuilder
                 .setImage(image)
                 .setFields(fields);
     }
-    
+
     /**
      * Checks if the given embed is empty. Empty embeds will throw an exception if built
      * 
@@ -318,7 +318,7 @@ public class EmbedBuilder
         }
         return this; 
     }
-    
+
     /**
      * Sets the Color of the embed.
      *
@@ -335,7 +335,7 @@ public class EmbedBuilder
         this.color = color;
         return this;
     }
-    
+
     /**
      * Sets the Thumbnail of the embed.
      *
@@ -395,7 +395,7 @@ public class EmbedBuilder
         }
         return this;
     }
-    
+
     /**
      * Sets the Author of the embed. The author appears in the top left of the embed and can have a small
      * image beside it along with the author's name being made clickable by way of providing a url.
@@ -435,7 +435,7 @@ public class EmbedBuilder
         }
         return this;
     }
-    
+
     /**
      * Sets the Footer of the embed.
      *
@@ -472,7 +472,7 @@ public class EmbedBuilder
         }
         return this;
     }
-    
+
     /**
      * Copies the provided Field into a new Field for this builder.
      * <br>For additional documentation, see {@link #addField(String, String, boolean)}
@@ -486,7 +486,7 @@ public class EmbedBuilder
     {
         return field == null ? this : addField(field.getName(), field.getValue(), field.isInline());
     }
-    
+
     /**
      * Adds a Field to the embed.
      *
@@ -519,7 +519,7 @@ public class EmbedBuilder
         this.fields.add(new MessageEmbed.Field(name, value, inline));
         return this;
     }
-    
+
     /**
      * Adds a blank (empty) Field to the embed.
      *

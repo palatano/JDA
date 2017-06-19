@@ -29,6 +29,7 @@ import javax.security.auth.login.LoginException;
 import java.util.List;
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class MessageListenerExample extends ListenerAdapter
 {
     /**
@@ -140,7 +141,6 @@ public class MessageListenerExample extends ListenerAdapter
 
             System.out.printf("[GRP: %s]<%s>: %s\n", groupName, author.getName(), msg);
         }
-
 
         //Now that you have a grasp on the things that you might see in an event, specifically MessageReceivedEvent,
         // we will look at sending / responding to messages!

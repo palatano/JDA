@@ -20,7 +20,6 @@ import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.requests.Request;
 import net.dv8tion.jda.core.requests.Response;
 import net.dv8tion.jda.core.requests.RestAction;
-import net.dv8tion.jda.core.requests.Route;
 import net.dv8tion.jda.core.utils.Checks;
 
 import java.util.*;
@@ -48,6 +47,7 @@ public abstract class PaginationAction<T, M extends PaginationAction<T, M>> exte
     protected final int maxLimit;
     protected final int minLimit;
     protected final AtomicInteger limit;
+    protected final Class<M> clazz;
 
     protected volatile T last = null;
     protected volatile boolean useCache = true;
@@ -57,8 +57,8 @@ public abstract class PaginationAction<T, M extends PaginationAction<T, M>> exte
      *
      * @param api
      *        The current JDA instance
-     * @param route
-     *        The base route
+     * @param clazz
+     *        The class that extends PaginationAction, used for return types
      * @param maxLimit
      *        The inclusive maximum limit that can be used in {@link #limit(int)}
      * @param minLimit
@@ -66,9 +66,11 @@ public abstract class PaginationAction<T, M extends PaginationAction<T, M>> exte
      * @param initialLimit
      *        The initial limit to use on the pagination endpoint
      */
-    public PaginationAction(JDA api, Route.CompiledRoute route, int minLimit, int maxLimit, int initialLimit)
+    public PaginationAction(JDA api, Class<M> clazz, int minLimit, int maxLimit, int initialLimit)
     {
-        super(api, route);
+        super(api, null);
+
+        this.clazz = clazz;
         this.maxLimit = maxLimit;
         this.minLimit = minLimit;
         this.limit = new AtomicInteger(initialLimit);
@@ -81,10 +83,14 @@ public abstract class PaginationAction<T, M extends PaginationAction<T, M>> exte
      *
      * @param api
      *        The current JDA instance
+     * @param clazz
+     *        The class that extends PaginationAction, used for return types
      */
-    public PaginationAction(JDA api)
+    public PaginationAction(JDA api, Class<M> clazz)
     {
         super(api, null);
+
+        this.clazz = clazz;
         this.maxLimit = 0;
         this.minLimit = 0;
         this.limit = new AtomicInteger(0);
@@ -185,7 +191,7 @@ public abstract class PaginationAction<T, M extends PaginationAction<T, M>> exte
         Checks.check(minLimit == 0 || limit >= minLimit, "Limit must be greater or equal to %d", minLimit);
 
         this.limit.set(limit);
-        return (M) this;
+        return clazz.cast(this);
     }
 
     /**
@@ -205,7 +211,7 @@ public abstract class PaginationAction<T, M extends PaginationAction<T, M>> exte
     public M cache(boolean enableCache)
     {
         this.useCache = enableCache;
-        return (M) this;
+        return clazz.cast(this);
     }
 
     /**
@@ -303,6 +309,7 @@ public abstract class PaginationAction<T, M extends PaginationAction<T, M>> exte
         return StreamSupport.stream(spliterator(), true);
     }
 
+    @Override
     protected abstract void handleResponse(Response response, Request<List<T>> request);
 
     /**

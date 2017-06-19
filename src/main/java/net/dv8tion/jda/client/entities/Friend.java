@@ -30,7 +30,7 @@ public interface Friend extends Relationship
 
     Game getGame();
 
-    RestAction removeFriend();
+    RestAction<Void> removeFriend();
 
     //Create new Group
 }

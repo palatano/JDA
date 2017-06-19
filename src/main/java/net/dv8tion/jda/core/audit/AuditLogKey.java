@@ -121,8 +121,8 @@ public enum AuditLogKey
      */
     GUILD_MFA_LEVEL("mfa_level"),
 
+    // ### CHANNEL ### 
 
-    // CHANNEL
     /**
      * Change of the {@link net.dv8tion.jda.core.entities.Channel#getName() Channel.getName()} value.
      *
@@ -154,8 +154,8 @@ public enum AuditLogKey
      */
     CHANNEL_USER_LIMIT("user_limit"),
 
+    // ### MEMBER ###
 
-    // MEMBER
     /**
      * Change of the {@link net.dv8tion.jda.core.entities.Member#getNickname() Member.getNickname()} value
      *
@@ -197,8 +197,8 @@ public enum AuditLogKey
      */
     MEMBER_ROLES_REMOVE("$remove"),
 
+    // ### PERMISSION OVERRIDE ###
 
-    // PERMISSION OVERRIDE
     /**
      * Modified raw denied permission bits
      * <br>Similar to the value returned by {@link net.dv8tion.jda.core.entities.PermissionOverride#getDeniedRaw() PermissionOverride.getDeniedRaw()}
@@ -217,8 +217,8 @@ public enum AuditLogKey
      */
     OVERRIDE_ALLOW("allow"),
 
+    // ### ROLE ###
 
-    // ROLE
     /**
      * Change of the {@link net.dv8tion.jda.core.entities.Role#getName() Role.getName()} value.
      *
@@ -256,8 +256,8 @@ public enum AuditLogKey
      */
     ROLE_MENTIONABLE("mentionable"),
 
+    // ### EMOTE ###
 
-    // EMOTE
     /**
      * Change of the {@link net.dv8tion.jda.core.entities.Emote#getName() Emote.getName()} value.
      *
@@ -283,8 +283,8 @@ public enum AuditLogKey
      */
     EMOTE_ROLES_REMOVE("$remove"),
 
+    // ### WEBHOOK ###
 
-    // WEBHOOK
     /**
      * Change of the {@link net.dv8tion.jda.core.entities.Webhook#getName() Webhook.getName()} value.
      *

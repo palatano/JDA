@@ -26,6 +26,8 @@ import org.json.JSONObject;
  */
 public class ErrorResponseException extends RuntimeException
 {
+    private static final long serialVersionUID = -7257405755192718781L;
+
     private final ErrorResponse errorResponse;
     private final Response response;
     private final String meaning;

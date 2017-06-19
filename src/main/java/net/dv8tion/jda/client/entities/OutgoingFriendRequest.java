@@ -20,5 +20,5 @@ import net.dv8tion.jda.core.requests.RestAction;
 
 public interface OutgoingFriendRequest extends Relationship
 {
-    RestAction cancel();
+    RestAction<Void> cancel();
 }

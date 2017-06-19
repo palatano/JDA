@@ -61,7 +61,7 @@ public class RoleOrderAction extends OrderAction<Role, RoleOrderAction>
      */
     public RoleOrderAction(Guild guild, boolean useDiscordOrder)
     {
-        super(guild.getJDA(), !useDiscordOrder, Route.Guilds.MODIFY_ROLES.compile(guild.getId()));
+        super(guild.getJDA(), RoleOrderAction.class, !useDiscordOrder, Route.Guilds.MODIFY_ROLES.compile(guild.getId()));
         this.guild = guild;
 
         List<Role> roles = guild.getRoles();

@@ -178,7 +178,7 @@ public class ApplicationImpl implements Application
         }
         return mng;
     }
-    
+
     @Override
     public String getName()
     {

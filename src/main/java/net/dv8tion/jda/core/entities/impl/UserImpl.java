@@ -92,7 +92,6 @@ public class UserImpl implements User
         return getAvatarUrl() == null ? getDefaultAvatarUrl() : getAvatarUrl();
     }
 
-
     @Override
     public boolean hasPrivateChannel()
     {

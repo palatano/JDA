@@ -21,6 +21,8 @@ package net.dv8tion.jda.core.exceptions;
  */
 public class GuildUnavailableException extends RuntimeException
 {
+    private static final long serialVersionUID = 4129854707335205465L;
+
     /**
      * Creates a new GuildUnavailableException instance
      */

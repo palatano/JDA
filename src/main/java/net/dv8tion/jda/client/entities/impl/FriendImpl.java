@@ -63,7 +63,7 @@ public class FriendImpl implements Friend
     }
 
     @Override
-    public RestAction removeFriend()
+    public RestAction<Void> removeFriend()
     {
         return null;
     }

@@ -27,7 +27,7 @@ import java.nio.ShortBuffer;
  */
 public class Decoder
 {
-    protected int ssrc;
+    protected final int ssrc;
     protected char lastSeq;
     protected int lastTimestamp;
     protected PointerByReference opusDecoder;
@@ -67,8 +67,7 @@ public class Decoder
         }
         else
         {
-            char seq = decryptedPacket.getSequence();
-            this.lastSeq = seq;
+            this.lastSeq = decryptedPacket.getSequence();
             this.lastTimestamp = decryptedPacket.getTimestamp();
 
             byte[] encodedAudio = decryptedPacket.getEncodedAudio();

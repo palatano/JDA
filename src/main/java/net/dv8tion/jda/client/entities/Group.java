@@ -42,6 +42,5 @@ public interface Group extends MessageChannel, CallableChannel
 
     //getGroupManager()
 
-
-    RestAction leaveGroup();
+    RestAction<Void> leaveGroup();
 }

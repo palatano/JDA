@@ -81,6 +81,10 @@ public class MessageReactionBulkRemoveHandler extends SocketHandler
                     new PrivateMessageReactionRemoveAllEvent(
                             api, responseNumber,
                             messageId, (PrivateChannel) channel));
+            case VOICE:
+                break;
+            case UNKNOWN:
+                break;
         }
 
         manager.handle(

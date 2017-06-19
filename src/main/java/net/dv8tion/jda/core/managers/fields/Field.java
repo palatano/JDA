@@ -47,7 +47,6 @@ public abstract class Field<T, M>
     protected T value;
     protected boolean set;
 
-
     /**
      * Creates a new Field instance
      *

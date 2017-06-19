@@ -243,7 +243,7 @@ public class EntityBuilder
             cachedGuildJsons.put(id, guild);
             cachedGuildCallbacks.put(id, secondPassCallback);
 
-            GuildMembersChunkHandler handler = api.getClient().getHandler("GUILD_MEMBERS_CHUNK");
+            GuildMembersChunkHandler handler = api.getClient().getHandler("GUILD_MEMBERS_CHUNK", GuildMembersChunkHandler.class);
             handler.setExpectedGuildMembers(id, guild.getInt("member_count"));
 
             //If we are already past READY / RESUME, then chunk at runtime. Otherwise, pass back to the ReadyHandler
@@ -268,7 +268,7 @@ public class EntityBuilder
             }
             else
             {
-                ReadyHandler readyHandler = api.getClient().getHandler("READY");
+                ReadyHandler readyHandler = api.getClient().getHandler("READY", ReadyHandler.class);
                 readyHandler.acknowledgeGuild(guildObj, true, true, api.getAccountType() == AccountType.CLIENT);
             }
 
@@ -843,7 +843,7 @@ public class EntityBuilder
                     }
                 }
             }
-            message.setMentionedUsers(new LinkedList<User>(mentionedUsers.values()));
+            message.setMentionedUsers(new LinkedList<>(mentionedUsers.values()));
 
             TreeMap<Integer, Role> mentionedRoles = new TreeMap<>();
             if (!jsonObject.isNull("mention_roles"))
@@ -860,7 +860,7 @@ public class EntityBuilder
                     }
                 }
             }
-            message.setMentionedRoles(new LinkedList<Role>(mentionedRoles.values()));
+            message.setMentionedRoles(new LinkedList<>(mentionedRoles.values()));
 
             List<TextChannel> mentionedChannels = new LinkedList<>();
             TLongObjectMap<TextChannel> chanMap = ((GuildImpl) textChannel.getGuild()).getTextChannelsMap();
@@ -934,7 +934,7 @@ public class EntityBuilder
                     imageJson.isNull("height") ? -1 : imageJson.getInt("height")));
         }
         else embed.setImage(null);
-        
+
         if (messageEmbed.has("footer"))
         {
             JSONObject footerJson = messageEmbed.getJSONObject("footer");
@@ -944,7 +944,7 @@ public class EntityBuilder
                     footerJson.isNull("proxy_icon_url") ? null : footerJson.getString("proxy_icon_url")));
         }
         else embed.setFooter(null);
-        
+
         if (messageEmbed.has("fields"))
         {
             JSONArray fieldsJson = messageEmbed.getJSONArray("fields");
@@ -961,7 +961,7 @@ public class EntityBuilder
             embed.setFields(fields);
         }
         else embed.setFields(Collections.emptyList());
-        
+
         if (messageEmbed.has("video"))
         {
             JSONObject videoJson = messageEmbed.getJSONObject("video");
@@ -975,7 +975,7 @@ public class EntityBuilder
 
     public PermissionOverride createPermissionOverride(JSONObject override, Channel chan)
     {
-        PermissionOverrideImpl permOverride = null;
+        PermissionOverrideImpl permOverride;
         final long id = override.getLong("id");
         long allow = override.getLong("allow");
         long deny = override.getLong("deny");

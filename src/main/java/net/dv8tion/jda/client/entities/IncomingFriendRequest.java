@@ -20,6 +20,6 @@ import net.dv8tion.jda.core.requests.RestAction;
 
 public interface IncomingFriendRequest extends Relationship
 {
-    RestAction accept();
-    RestAction ignore();
+    RestAction<Void> accept();
+    RestAction<Void> ignore();
 }

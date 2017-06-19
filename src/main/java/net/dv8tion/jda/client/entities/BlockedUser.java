@@ -20,5 +20,5 @@ import net.dv8tion.jda.core.requests.RestAction;
 
 public interface BlockedUser extends Relationship
 {
-    RestAction unblockUser();
+    RestAction<Void> unblockUser();
 }

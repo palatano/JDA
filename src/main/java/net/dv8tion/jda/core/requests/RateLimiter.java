@@ -41,12 +41,10 @@ public abstract class RateLimiter
         this.pool = new ScheduledThreadPoolExecutor(poolSize, new RateLimitThreadFactory(requester.getJDA()));
     }
 
-
     // -- Required Implementations --
     public abstract Long getRateLimit(Route.CompiledRoute route);
-    protected abstract void queueRequest(Request request);
+    protected abstract void queueRequest(Request<?> request);
     protected abstract Long handleResponse(Route.CompiledRoute route, okhttp3.Response response);
-
 
     // --- Default Implementations --
 
@@ -87,7 +85,7 @@ public abstract class RateLimiter
     private class RateLimitThreadFactory implements ThreadFactory
     {
         final String identifier;
-        AtomicInteger threadCount = new AtomicInteger(1);
+        final AtomicInteger threadCount = new AtomicInteger(1);
 
         public RateLimitThreadFactory(JDAImpl api)
         {

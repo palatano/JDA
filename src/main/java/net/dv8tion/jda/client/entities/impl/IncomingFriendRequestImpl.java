@@ -43,13 +43,13 @@ public class IncomingFriendRequestImpl implements IncomingFriendRequest
     }
 
     @Override
-    public RestAction accept()
+    public RestAction<Void> accept()
     {
         return null;
     }
 
     @Override
-    public RestAction ignore()
+    public RestAction<Void> ignore()
     {
         return null;
     }

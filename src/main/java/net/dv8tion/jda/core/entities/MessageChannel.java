@@ -1070,7 +1070,7 @@ public interface MessageChannel extends ISnowflake, Formattable
 
                 MessageHistory mHistory = new MessageHistory(MessageChannel.this);
 
-                EntityBuilder builder = api.getEntityBuilder();;
+                EntityBuilder builder = api.getEntityBuilder();
                 LinkedList<Message> msgs  = new LinkedList<>();
                 JSONArray historyJson = response.getArray();
 

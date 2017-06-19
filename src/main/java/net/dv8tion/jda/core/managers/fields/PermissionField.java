@@ -41,8 +41,8 @@ import java.util.function.Supplier;
  */
 public class PermissionField extends RoleField<Long>
 {
-    Set<Permission> permsGiven = new HashSet<>();
-    Set<Permission> permsRevoked = new HashSet<>();
+    final Set<Permission> permsGiven = new HashSet<>();
+    final Set<Permission> permsRevoked = new HashSet<>();
 
     public PermissionField(RoleManagerUpdatable manager, Supplier<Long> originalValue)
     {
@@ -121,10 +121,7 @@ public class PermissionField extends RoleField<Long>
     public RoleManagerUpdatable setPermissions(Collection<Permission> permissions)
     {
         Checks.notNull(permissions, "permissions Collection");
-        permissions.forEach(p ->
-        {
-            Checks.notNull(p, "Permission in the Collection");
-        });
+        permissions.forEach(p -> Checks.notNull(p, "Permission in the Collection"));
 
         return setValue(Permission.getRaw(permissions));
     }
@@ -133,10 +130,7 @@ public class PermissionField extends RoleField<Long>
     public void checkValue(Long value)
     {
         Checks.notNull(value, "permission value");
-        Permission.getPermissions(value).forEach(p ->
-        {
-            checkPermission(p);
-        });
+        Permission.getPermissions(value).forEach(this::checkPermission);
     }
 
     /**

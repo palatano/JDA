@@ -208,7 +208,6 @@ public class EmoteImpl implements Emote
         return this.id == oEmote.id && getName().equals(oEmote.getName());
     }
 
-
     @Override
     public int hashCode()
     {

@@ -20,18 +20,18 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 
 plugins {
-    id 'com.jfrog.bintray' version '1.7.2'
+    id 'com.jfrog.bintray' version '1.7.3'
     id 'java'
     id 'maven-publish'
     id 'signing'
-    id 'com.github.ben-manes.versions' version '0.13.0'
-    id 'com.github.johnrengelman.shadow' version '1.2.4'
+    id 'com.github.ben-manes.versions' version '0.15.0'
+    id 'com.github.johnrengelman.shadow' version '2.0.0'
 }
 
 def versionObj = new Version(major: 3, minor: 1, revision: 1)
 
-group = "net.dv8tion"
-archivesBaseName = "JDA"
+group = 'net.dv8tion'
+archivesBaseName = 'JDA'
 version = "$versionObj"
 
 sourceCompatibility = 1.8
@@ -41,18 +41,11 @@ repositories {
     jcenter()
 }
 
-sourceSets {
-    examples {
-        compileClasspath += main.output
-        runtimeClasspath += main.output
-    }
-}
-
 dependencies {
     //General Utility
-    compile 'org.apache.commons:commons-lang3:3.5'
+    compile 'org.apache.commons:commons-lang3:3.6'
     compile 'org.apache.commons:commons-collections4:4.1'
-    compile 'org.json:json:20160810'
+    compile 'org.json:json:20170516'
     compile 'net.sf.trove4j:trove4j:3.0.3'
 
     //Native Library Support
@@ -60,22 +53,28 @@ dependencies {
 
     //Web Connection Support
     compile 'com.neovisionaries:nv-websocket-client:2.2'
+<<<<<<< master
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
+=======
+    compile ( 'com.mashape.unirest:unirest-java:1.4.9' ) {
+        exclude group: 'junit', module: 'junit'
+    }
+>>>>>>> Small cleanup
 
-    //Sets the dependencies for the examples
-    examplesCompile configurations.compile
-    examplesRuntime configurations.runtime
 }
 
 task sourcesForRelease(type: Copy) {
+    group = 'other'
+    description = 'Assembles a jar archive containing the main javadocs.'
     from 'src/main/java'
-    into 'build/filteredSrc'
-    filter(ReplaceTokens, tokens: [
-            versionMajor: versionObj.major.toString(),
-            versionMinor: versionObj.minor.toString(),
-            versionRevision: versionObj.revision.toString(),
-            versionBuild: versionObj.build.toString()
-        ])
+    into 'build/tmp/filteredSrc'
+    filter ReplaceTokens, tokens: [
+            'versionMajor': versionObj.major.toString(),
+            'versionMinor': versionObj.minor.toString(),
+            'versionRevision': versionObj.revision.toString(),
+            'versionBuild': versionObj.build.toString(),
+            'versionString': versionObj.toString()
+        ]
 }
 
 compileJava {
@@ -95,15 +94,19 @@ jar {
 }
 
 shadowJar {
-    classifier = "withDependencies"
+    classifier = 'withDependencies'
 }
 
 task sourcesJar(type: Jar, dependsOn: classes) {
+    group = 'build'
+    description = 'Assembles a jar archive containing the main sources.'
     classifier = 'sources'
-    from "${buildDir}/filteredSrc"
+    from "${buildDir}/tmp/filteredSrc"
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
+    group = 'build'
+    description = 'Assembles a jar archive containing the main javadocs.'
     classifier = 'javadoc'
     from javadoc.destinationDir
 }
@@ -116,50 +119,50 @@ javadoc {
 
     //### excludes ###
     //jda internals
-    exclude("net/dv8tion/jda/bot/entities/impl")
-    exclude("net/dv8tion/jda/bot/handle")
-    exclude("net/dv8tion/jda/bot/managers/impl")
+    exclude('net/dv8tion/jda/bot/entities/impl')
+    exclude('net/dv8tion/jda/bot/handle')
+    exclude('net/dv8tion/jda/bot/managers/impl')
 
-    exclude("net/dv8tion/jda/client/entities/impl")
-    exclude("net/dv8tion/jda/client/handle")
-    exclude("net/dv8tion/jda/client/managers/impl")
+    exclude('net/dv8tion/jda/client/entities/impl')
+    exclude('net/dv8tion/jda/client/handle')
+    exclude('net/dv8tion/jda/client/managers/impl')
 
-    exclude("net/dv8tion/jda/core/audio/AudioConnection.java",
-            "net/dv8tion/jda/core/audio/AudioWebSocket.java",
-            "net/dv8tion/jda/core/audio/AudioPacket.java",
-            "net/dv8tion/jda/core/audio/Decoder.java",
-            "net/dv8tion/jda/core/audio/hooks/ListenerProxy.java")
-    exclude("net/dv8tion/jda/core/entities/impl")
-    exclude("net/dv8tion/jda/core/handle")
-    exclude("net/dv8tion/jda/core/managers/impl")
-    exclude("net/dv8tion/jda/core/requests/GuildLock.java",
-            "net/dv8tion/jda/core/requests/WebSocketClient.java",
-            "net/dv8tion/jda/core/requests/RateLimiter.java",
-            "net/dv8tion/jda/core/requests/Request.java",
-            "net/dv8tion/jda/core/requests/Route.java",
-            "net/dv8tion/jda/core/requests/Requester.java",
-            "net/dv8tion/jda/core/requests/Response.java",
-            "net/dv8tion/jda/core/requests/ratelimit",
-            "net/dv8tion/jda/core/requests/restaction/CompletedFuture.java",
-            "net/dv8tion/jda/core/requests/restaction/RequestFuture.java")
+    exclude('net/dv8tion/jda/core/audio/AudioConnection.java',
+            'net/dv8tion/jda/core/audio/AudioWebSocket.java',
+            'net/dv8tion/jda/core/audio/AudioPacket.java',
+            'net/dv8tion/jda/core/audio/Decoder.java',
+            'net/dv8tion/jda/core/audio/hooks/ListenerProxy.java')
+    exclude('net/dv8tion/jda/core/entities/impl')
+    exclude('net/dv8tion/jda/core/handle')
+    exclude('net/dv8tion/jda/core/managers/impl')
+    exclude('net/dv8tion/jda/core/requests/GuildLock.java',
+            'net/dv8tion/jda/core/requests/WebSocketClient.java',
+            'net/dv8tion/jda/core/requests/RateLimiter.java',
+            'net/dv8tion/jda/core/requests/Request.java',
+            'net/dv8tion/jda/core/requests/Route.java',
+            'net/dv8tion/jda/core/requests/Requester.java',
+            'net/dv8tion/jda/core/requests/Response.java',
+            'net/dv8tion/jda/core/requests/ratelimit',
+            'net/dv8tion/jda/core/requests/restaction/CompletedFuture.java',
+            'net/dv8tion/jda/core/requests/restaction/RequestFuture.java')
 
     //opuswrapper
-    exclude("tomp2p/opuswrapper")
-    
+    exclude('tomp2p/opuswrapper')
+
     //voice crypto
-    exclude("com/iwebpp/crypto")
+    exclude('com/iwebpp/crypto')
 }
 
 bintray {
     user = bintrayUsername
     key = bintrayApiKey
-    publications = ["BintrayRelease"]
+    publications = ['BintrayRelease']
+    publish = true
     pkg {
         repo = 'maven'
         name = 'JDA'
         licenses = ['Apache-2.0']
         vcsUrl = 'https://github.com/DV8FromTheWorld/JDA.git'
-        publish = true
         version {
             name = project.version
             released = new Date()
@@ -182,7 +185,7 @@ publishing {
 
 String getProjectProperty(String propertyName)
 {
-    String property = ""
+    String property = ''
     if (hasProperty(propertyName))
     {
         property = this.properties[propertyName]
@@ -191,9 +194,10 @@ String getProjectProperty(String propertyName)
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '3.5'
+    group = 'build setup'
+    description = 'Generates Gradle wrapper files.'
+    gradleVersion = '4.0'
 }
-
 
 build {
     dependsOn clean
@@ -210,17 +214,17 @@ build {
 
 bintrayUpload {
     dependsOn build
-    
-    onlyIf { !getProjectProperty("bintrayUsername").empty }
-    onlyIf { !getProjectProperty("bintrayApiKey").empty }
-    onlyIf { System.getenv("BUILD_NUMBER") }
+
+    onlyIf { !getProjectProperty('bintrayUsername').empty }
+    onlyIf { !getProjectProperty('bintrayApiKey').empty }
+    onlyIf { System.getenv('BUILD_NUMBER') }
 }
 
 class Version {
     String major, minor, revision
 
-    String getBuild() {
-        System.getenv("BUILD_NUMBER") ?: System.getProperty("BUILD_NUMBER") ?: "DEV"
+    static String getBuild() {
+        System.getenv('BUILD_NUMBER') ?: System.getProperty('BUILD_NUMBER') ?: 'DEV'
     }
 
     String toString() {

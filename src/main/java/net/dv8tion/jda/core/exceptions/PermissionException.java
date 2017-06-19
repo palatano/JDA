@@ -23,6 +23,8 @@ import net.dv8tion.jda.core.Permission;
  */
 public class PermissionException extends RuntimeException
 {
+    private static final long serialVersionUID = 112613048629489018L;
+
     private final Permission permission;
 
     /**

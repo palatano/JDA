@@ -84,7 +84,7 @@ public class MentionPaginationAction extends PaginationAction<Message, MentionPa
 
     private MentionPaginationAction(JDA api, Guild guild)
     {
-        super(api, Route.Self.GET_RECENT_MENTIONS.compile(), 1, 100, 100);
+        super(api, MentionPaginationAction.class, 1, 100, 25);
 
         this.guild = guild;
     }
@@ -165,7 +165,7 @@ public class MentionPaginationAction extends PaginationAction<Message, MentionPa
             return;
         }
 
-        EntityBuilder builder = api.getEntityBuilder();;
+        EntityBuilder builder = api.getEntityBuilder();
         List<Message> mentions = new LinkedList<>();
         JSONArray arr = response.getArray();
         for (int i = 0; i < arr.length(); i++)

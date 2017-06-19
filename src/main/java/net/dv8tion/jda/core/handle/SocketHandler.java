@@ -29,7 +29,6 @@ public abstract class SocketHandler
         this.api = api;
     }
 
-
     public final void handle(long responseTotal, JSONObject o)
     {
         this.allContent = o;

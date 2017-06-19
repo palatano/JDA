@@ -47,7 +47,7 @@ public class JDAClientImpl implements JDAClient
     protected final TLongObjectMap<Group> groups = MiscUtil.newLongMap();
     protected final TLongObjectMap<Relationship> relationships = MiscUtil.newLongMap();
     protected final TLongObjectMap<CallUser> callUsers = MiscUtil.newLongMap();
-    protected UserSettingsImpl userSettings;
+    protected final UserSettingsImpl userSettings;
 
     public JDAClientImpl(JDAImpl api)
     {
@@ -156,36 +156,25 @@ public class JDAClientImpl implements JDAClient
     @Override
     public Relationship getRelationshipById(String id, RelationshipType type)
     {
-        Relationship relationship = getRelationshipById(id);
-        if (relationship != null && relationship.getType() == type)
-            return relationship;
-        else
-            return null;
+        return getRelationshipById(MiscUtil.parseSnowflake(id));
     }
 
     @Override
     public Relationship getRelationshipById(long id, RelationshipType type)
     {
-        Relationship relationship = getRelationshipById(id);
-        if (relationship != null && relationship.getType() == type)
-            return relationship;
-        else
-            return null;
+        return getRelationshipById(id, type, Relationship.class);
     }
 
-
     @Override
-    @SuppressWarnings("unchecked")
     public List<Friend> getFriends()
     {
-        return (List<Friend>) (List) getRelationships(RelationshipType.FRIEND);
+        return getRelationships(RelationshipType.FRIEND, Friend.class);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
     public List<Friend> getFriendsByName(String name, boolean ignoreCase)
     {
-        return (List<Friend>) (List) getRelationships(RelationshipType.FRIEND, name, ignoreCase);
+        return getRelationships(RelationshipType.FRIEND, Friend.class, name, ignoreCase);
     }
 
     @Override
@@ -203,13 +192,40 @@ public class JDAClientImpl implements JDAClient
     @Override
     public Friend getFriendById(String id)
     {
-        return (Friend) getRelationshipById(id, RelationshipType.FRIEND);
+        return getFriendById(MiscUtil.parseSnowflake(id));
     }
 
     @Override
     public Friend getFriendById(long id)
     {
-        return (Friend) getRelationshipById(id, RelationshipType.FRIEND);
+        return getRelationshipById(id, RelationshipType.FRIEND, Friend.class);
+    }
+
+    private <T extends Relationship> List<T> getRelationships(RelationshipType type, Class<T> clazz) 
+    { 
+        return Collections.unmodifiableList(relationships.valueCollection().stream() 
+                .filter(r -> r.getType().equals(type)) 
+                .map(clazz::cast) 
+                .collect(Collectors.toList())); 
+    } 
+ 
+    private <T extends Relationship> T getRelationshipById(long id, RelationshipType type, Class<T> clazz) 
+    { 
+        Relationship relationship = getRelationshipById(id); 
+        if (relationship.getType() == type) 
+            return clazz.cast(relationship); 
+        return null; 
+    } 
+ 
+    private <T extends Relationship> List<T> getRelationships(RelationshipType type, Class<T> clazz, String name, boolean ignoreCase) 
+    { 
+        return Collections.unmodifiableList(relationships.valueCollection().stream() 
+                .filter(r -> r.getType().equals(type)) 
+                .filter(r -> (ignoreCase 
+                        ? r.getUser().getName().equalsIgnoreCase(name) 
+                        : r.getUser().getName().equals(name))) 
+                .map(clazz::cast) 
+                .collect(Collectors.toList())); 
     }
 
     @Override

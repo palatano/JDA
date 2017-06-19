@@ -52,6 +52,7 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
     protected final List<T> orderList;
     protected final boolean ascendingOrder;
     protected int selectedPosition = -1;
+    protected final Class<? extends M> clazz; 
 
     /**
      * Creates a new OrderAction instance
@@ -59,13 +60,15 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
      * @param api
      *        JDA instance which is associated with the entities contained
      *        in the order list
+     * @param clazz
+     *        The class that extends OrderAction, used for return types
      * @param route
      *        The {@link net.dv8tion.jda.core.requests.Route.CompiledRoute CompiledRoute}
      *        which is provided to the {@link RestAction#RestAction(JDA, Route.CompiledRoute, okhttp3.RequestBody) RestAction Constructor}
      */
-    public OrderAction(JDA api, Route.CompiledRoute route)
+    public OrderAction(JDA api, Class<? extends M> clazz, Route.CompiledRoute route)
     {
-        this(api, true, route);
+        this(api, clazz, true, route);
     }
 
     /**
@@ -74,16 +77,19 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
      * @param api
      *        JDA instance which is associated with the entities contained
      *        in the order list
+     * @param clazz
+     *        The class that extends OrderAction, used for return types
      * @param ascendingOrder
      *        Whether or not the order of items should be ascending
      * @param route
      *        The {@link net.dv8tion.jda.core.requests.Route.CompiledRoute CompiledRoute}
      *        which is provided to the {@link RestAction#RestAction(JDA, Route.CompiledRoute, okhttp3.RequestBody) RestAction Constructor}
      */
-    public OrderAction(JDA api, boolean ascendingOrder, Route.CompiledRoute route)
+    public OrderAction(JDA api, Class<? extends M> clazz, boolean ascendingOrder, Route.CompiledRoute route)
     {
         super(api, route);
         this.api = api;
+        this.clazz = clazz;
         this.orderList = new ArrayList<>();
         this.ascendingOrder = ascendingOrder;
     }
@@ -133,7 +139,7 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
 
         this.selectedPosition = selectedPosition;
 
-        return (M) this;
+        return clazz.cast(this);
     }
 
     /**
@@ -293,7 +299,7 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
         T selectedItem = orderList.remove(selectedPosition);
         orderList.add(position, selectedItem);
 
-        return (M) this;
+        return clazz.cast(this);
     }
 
     /**
@@ -321,7 +327,7 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
         orderList.set(swapPosition, selectedItem);
         orderList.set(selectedPosition, swapItem);
 
-        return (M) this;
+        return clazz.cast(this);
     }
 
     /**
@@ -361,7 +367,7 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
     public M reverseOrder()
     {
         Collections.reverse(this.orderList);
-        return (M) this;
+        return clazz.cast(this);
     }
 
     /**
@@ -375,7 +381,7 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
     public M shuffleOrder()
     {
         Collections.shuffle(this.orderList);
-        return (M) this;
+        return clazz.cast(this);
     }
 
     /**
@@ -398,7 +404,7 @@ public abstract class OrderAction<T, M extends OrderAction<T, M>> extends RestAc
         Checks.notNull(comparator, "Provided comparator");
 
         this.orderList.sort(comparator);
-        return (M) this;
+        return clazz.cast(this);
     }
 
     @Override

@@ -42,7 +42,7 @@ import java.util.stream.Collectors;
 
 public abstract class AbstractChannelImpl<T extends AbstractChannelImpl<T>> implements Channel
 {
-
+    protected final Class<T> clazz;
     protected final long id;
     protected final GuildImpl guild;
 
@@ -55,8 +55,9 @@ public abstract class AbstractChannelImpl<T extends AbstractChannelImpl<T>> impl
     protected String name;
     protected int rawPosition;
 
-    public AbstractChannelImpl(long id, GuildImpl guild)
+    public AbstractChannelImpl(Class<T> clazz, long id, GuildImpl guild)
     {
+        this.clazz = clazz;
         this.id = id;
         this.guild = guild;
     }
@@ -259,18 +260,16 @@ public abstract class AbstractChannelImpl<T extends AbstractChannelImpl<T>> impl
         return overrides;
     }
 
-    @SuppressWarnings("unchecked")
     public T setName(String name)
     {
         this.name = name;
-        return (T) this;
+        return clazz.cast(this);
     }
 
-    @SuppressWarnings("unchecked")
     public T setRawPosition(int rawPosition)
     {
         this.rawPosition = rawPosition;
-        return (T) this;
+        return clazz.cast(this);
     }
 
     protected void checkPermission(Permission permission) {checkPermission(permission, null);}

@@ -23,6 +23,8 @@ import net.dv8tion.jda.core.requests.Route;
  */
 public class RateLimitedException extends Exception
 {
+    private static final long serialVersionUID = 7712115286558724829L;
+
     private final String rateLimitedRoute;
     private final long retryAfter;
 

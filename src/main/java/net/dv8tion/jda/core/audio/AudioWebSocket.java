@@ -471,10 +471,6 @@ public class AudioWebSocket extends WebSocketAdapter
 
             return new InetSocketAddress(ourIP, ourPort);
         }
-        catch (SocketException e)
-        {
-            return null;
-        }
         catch (IOException e)
         {
             return null;
@@ -556,7 +552,7 @@ public class AudioWebSocket extends WebSocketAdapter
     public static class KeepAliveThreadFactory implements ThreadFactory
     {
         final String identifier;
-        AtomicInteger threadCount = new AtomicInteger(1);
+        final AtomicInteger threadCount = new AtomicInteger(1);
 
         public KeepAliveThreadFactory(JDAImpl api)
         {

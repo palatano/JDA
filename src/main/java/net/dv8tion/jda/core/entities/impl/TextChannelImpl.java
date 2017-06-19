@@ -46,7 +46,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannelImpl> implem
 
     public TextChannelImpl(long id, GuildImpl guild)
     {
-        super(id, guild);
+        super(TextChannelImpl.class, id, guild);
     }
 
     @Override

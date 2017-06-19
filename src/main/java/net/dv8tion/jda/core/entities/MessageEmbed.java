@@ -106,7 +106,7 @@ public interface MessageEmbed
      *         containing the information about the video which should be embedded.
      */
     VideoInfo getVideoInfo();
-    
+
     /**
      * The footer (bottom) of the embedded content.
      * <br>This is typically used for timestamps or site icons.
@@ -115,7 +115,7 @@ public interface MessageEmbed
      *         containing the embed footer content.
      */
     Footer getFooter();
-    
+
     /**
      * The information about the image in the message embed
      *
@@ -123,7 +123,7 @@ public interface MessageEmbed
      *         containing image information.
      */
     ImageInfo getImage();
-    
+
     /**
      * The fields in a message embed.
      * <br>Message embeds can contain multiple fields, each with a name, value, and a boolean
@@ -134,7 +134,7 @@ public interface MessageEmbed
      *         containing field information.
      */
     List<Field> getFields();
-    
+
     /**
      * The color of the stripe on the side of the embed.
      * <br>If the color is 0 (no color), this will return null.
@@ -142,7 +142,7 @@ public interface MessageEmbed
      * @return Possibly-null Color.
      */
     Color getColor();
-    
+
     /**
      * The timestamp of the embed.
      *
@@ -350,7 +350,7 @@ public interface MessageEmbed
             return height;
         }
     }
-    
+
     /**
      * Represents the information provided to embed an image.
      */
@@ -378,7 +378,7 @@ public interface MessageEmbed
         {
             return url;
         }
-        
+
         /**
          * The url of the image, proxied by Discord
          * <br>This url is used to access the image through Discord instead of directly to prevent ip scraping.
@@ -410,7 +410,7 @@ public interface MessageEmbed
             return height;
         }
     }
-    
+
     /**
      * Class that represents the author of content, possibly including an icon
      * that Discord proxies.
@@ -450,7 +450,7 @@ public interface MessageEmbed
         {
             return url;
         }
-        
+
         /**
          * The url of the author's icon.
          *
@@ -460,7 +460,7 @@ public interface MessageEmbed
         {
             return iconUrl;
         }
-        
+
         /**
          * The url of the author's icon, proxied by Discord
          * <br>This url is used to access the image through Discord instead of directly to prevent ip scraping.
@@ -472,7 +472,7 @@ public interface MessageEmbed
             return proxyIconUrl;
         }
     }
-    
+
     /**
      * Class that represents a footer at the bottom of an embed
      */
@@ -498,7 +498,7 @@ public interface MessageEmbed
         {
             return text;
         }
-        
+
         /**
          * The url of the footer's icon.
          *
@@ -508,7 +508,7 @@ public interface MessageEmbed
         {
             return iconUrl;
         }
-        
+
         /**
          * The url of the footer's icon, proxied by Discord
          * <br>This url is used to access the image through Discord instead of directly to prevent ip scraping.
@@ -520,7 +520,7 @@ public interface MessageEmbed
             return proxyIconUrl;
         }
     }
-    
+
     /**
      * Represents a field in an embed. A single embed contains an array of
      * embed fields, each with a name and value, and a boolean determining if
@@ -588,7 +588,7 @@ public interface MessageEmbed
         {
             return value;
         }
-        
+
         /**
          * If the field is in line.
          *

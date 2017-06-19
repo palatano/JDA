@@ -41,7 +41,7 @@ public class GuildCreateHandler extends SocketHandler
             {
                 if (!api.getClient().isReady())
                 {
-                    api.getClient().<ReadyHandler>getHandler("READY").guildSetupComplete(guild);
+                    api.getClient().getHandler("READY", ReadyHandler.class).guildSetupComplete(guild);
                 }
                 else
                 {
@@ -70,7 +70,7 @@ public class GuildCreateHandler extends SocketHandler
             {
                 if (!api.getClient().isReady())
                 {
-                    api.getClient().<ReadyHandler>getHandler("READY").acknowledgeGuild(guild, false, false, false);
+                    api.getClient().getHandler("READY", ReadyHandler.class).acknowledgeGuild(guild, false, false, false);
                 }
                 else
                 {

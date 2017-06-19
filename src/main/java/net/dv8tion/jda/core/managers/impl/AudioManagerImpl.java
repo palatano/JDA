@@ -57,7 +57,7 @@ public class AudioManagerImpl implements AudioManager
 
     protected AudioSendHandler sendHandler;
     protected AudioReceiveHandler receiveHandler;
-    protected ListenerProxy connectionListener = new ListenerProxy();
+    protected final ListenerProxy connectionListener = new ListenerProxy();
     protected long queueTimeout = 100;
     protected boolean shouldReconnect = true;
 
@@ -406,8 +406,7 @@ public class AudioManagerImpl implements AudioManager
                 LOG.info("Audio System successfully setup!");
             else
                 LOG.info("Audio System encountered problems while loading, thus, is disabled.");
-            return AUDIO_SUPPORTED;
         }
-
+        return AUDIO_SUPPORTED;
     }
 }

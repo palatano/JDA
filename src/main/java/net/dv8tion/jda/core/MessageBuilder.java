@@ -63,7 +63,7 @@ public class MessageBuilder implements Appendable
         this.isTTS = tts;
         return this;
     }
-    
+
     /**
      * Adds a {@link net.dv8tion.jda.core.entities.MessageEmbed} to the Message. Embeds can be built using
      * the {@link net.dv8tion.jda.core.EmbedBuilder} and offer specialized formatting.
@@ -455,7 +455,7 @@ public class MessageBuilder implements Appendable
                         {
                             string = builder.toString();
                         }
-                        
+
                         Matcher matcher = CHANNEL_MENTION_PATTERN.matcher(string);
                         while (matcher.find())
                         {
@@ -500,7 +500,7 @@ public class MessageBuilder implements Appendable
                         while (matcher.find())
                         {
                             User user = jda.getUserById(matcher.group(1));
-                            String replacement = null;
+                            String replacement;
 
                             if (user == null)
                                 continue;
@@ -519,7 +519,7 @@ public class MessageBuilder implements Appendable
                 }
             }
         }
-        
+
         return this;
     }
 
@@ -578,7 +578,7 @@ public class MessageBuilder implements Appendable
             throw new IndexOutOfBoundsException("fromIndex > length()");
         if (fromIndex > endIndex)
             throw new IndexOutOfBoundsException("fromIndex > endIndex");
-        
+
         if (endIndex >= builder.length())
         {
             endIndex = builder.length() - 1;
@@ -644,7 +644,7 @@ public class MessageBuilder implements Appendable
             throw new IndexOutOfBoundsException("fromIndex > length()");
         if (fromIndex > endIndex)
             throw new IndexOutOfBoundsException("fromIndex > endIndex");
-        
+
         if (endIndex >= builder.length())
         {
             endIndex = builder.length() - 1;
@@ -696,27 +696,27 @@ public class MessageBuilder implements Appendable
      * <p><b>This is not Markdown safe.</b> An easy workaround is to include <a href="https://en.wikipedia.org/wiki/Zero-width_space">Zero Width Spaces</a>
      * as predetermined breaking points to the message and only split on them.
      *
-     * @param  policy
+     * @param  policies
      *         The {@link net.dv8tion.jda.core.MessageBuilder.SplitPolicy} defining how to split the text in the
      *         MessageBuilder into different, individual messages.
      * 
      * @return the created {@link net.dv8tion.jda.core.entities.Message Messages}
      */
-    public Queue<Message> buildAll(SplitPolicy... policy)
+    public Queue<Message> buildAll(SplitPolicy... policies)
     {
         if (this.isEmpty())
             throw new UnsupportedOperationException("Cannot build a Message with no content. (You never added any content to the message)");
 
-        LinkedList<Message> messages = new LinkedList<Message>();
+        LinkedList<Message> messages = new LinkedList<>();
 
         if (builder.length() <= 2000) {
             messages.add(this.build());
             return messages;
         }
 
-        if (policy == null || policy.length == 0)
+        if (policies == null || policies.length == 0)
         {
-            policy = new SplitPolicy[]{ SplitPolicy.ANYWHERE };
+            policies = new SplitPolicy[]{ SplitPolicy.ANYWHERE };
         }
 
         int currentBeginIndex = 0;
@@ -724,9 +724,9 @@ public class MessageBuilder implements Appendable
         messageLoop:
         while (currentBeginIndex < builder.length() - 2001)
         {
-            for (int i = 0; i < policy.length; i++)
+            for (SplitPolicy policy : policies)
             {
-                int currentEndIndex = policy[i].nextMessage(currentBeginIndex, this);
+                int currentEndIndex = policy.nextMessage(currentBeginIndex, this);
                 if (currentEndIndex != -1)
                 {
                     messages.add(build(currentBeginIndex, currentEndIndex));

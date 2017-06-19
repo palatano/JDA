@@ -35,7 +35,7 @@ public class VoiceChannelImpl extends AbstractChannelImpl<VoiceChannelImpl> impl
 
     public VoiceChannelImpl(long id, GuildImpl guild)
     {
-        super(id, guild);
+        super(VoiceChannelImpl.class, id, guild);
     }
 
     @Override

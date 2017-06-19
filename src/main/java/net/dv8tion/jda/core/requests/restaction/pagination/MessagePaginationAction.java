@@ -47,7 +47,7 @@ public class MessagePaginationAction extends PaginationAction<Message, MessagePa
 
     public MessagePaginationAction(MessageChannel channel)
     {
-        super(channel.getJDA(), Route.Messages.GET_MESSAGE_HISTORY.compile(channel.getId()), 1, 100, 100);
+        super(channel.getJDA(), MessagePaginationAction.class, 1, 100, 100);
 
         if (channel.getType() == ChannelType.TEXT)
         {

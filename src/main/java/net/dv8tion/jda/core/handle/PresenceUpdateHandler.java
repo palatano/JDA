@@ -156,8 +156,7 @@ public class PresenceUpdateHandler extends SocketHandler
             }
             else
             {
-                //In this case, this PRESENCE_UPDATE is for a Relation.
-
+                // TODO: In this case, this PRESENCE_UPDATE is for a Relation.
             }
         }
         else
@@ -183,7 +182,7 @@ public class PresenceUpdateHandler extends SocketHandler
             }
             else
             {
-                //cache in relationship stuff
+                // TODO: cache in relationship stuff
             }
         }
         return null;

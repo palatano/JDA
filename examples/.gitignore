@@ -1,0 +1,19 @@
+# project files
+src/test/
+
+# gradle
+/build/
+/.gradle/
+
+# eclipse files
+.classpath
+.project
+.settings/
+/bin/
+
+# intellij files
+/.idea/
+
+# netbeans files
+/.nb-gradle/
+*.nb-gradle-properties

@@ -26,8 +26,8 @@ import java.util.List;
  */
 public class CombinedAudio
 {
-    protected List<User> users;
-    protected short[] audioData;
+    protected final List<User> users;
+    protected final short[] audioData;
 
     public CombinedAudio(List<User> users, short[] audioData)
     {
@@ -64,17 +64,14 @@ public class CombinedAudio
      */
     public byte[] getAudioData(double volume)
     {
-        short s;
         int byteIndex = 0;
         byte[] audio = new byte[audioData.length * 2];
-        for (int i = 0; i < audioData.length; i++)
-        {
-            s = audioData[i];
+        for (short s : audioData) {
             if (volume != 1.0)
                 s = (short) (s * volume);
 
             byte leftByte = (byte) ((0x000000FF) & (s >> 8));
-            byte rightByte =  (byte) (0x000000FF & s);
+            byte rightByte = (byte) (0x000000FF & s);
             audio[byteIndex] = leftByte;
             audio[byteIndex + 1] = rightByte;
             byteIndex += 2;

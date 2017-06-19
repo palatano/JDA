@@ -72,8 +72,8 @@ public interface JDA
      */
     class ShardInfo
     {
-        int shardId;
-        int shardTotal;
+        final int shardId;
+        final int shardTotal;
 
         ShardInfo(int shardId, int shardTotal)
         {

@@ -89,7 +89,7 @@ public class MessageEmbedImpl implements MessageEmbed
     {
         return videoInfo;
     }
-    
+
     @Override
     public Footer getFooter() {
         return footer;
@@ -104,7 +104,7 @@ public class MessageEmbedImpl implements MessageEmbed
     public List<Field> getFields() {
         return Collections.unmodifiableList(fields);
     }
-    
+
     @Override
     public Color getColor() {
         return color;
@@ -192,31 +192,31 @@ public class MessageEmbedImpl implements MessageEmbed
         this.footer = footer;
         return this;
     }
-    
+
     public MessageEmbedImpl setImage(ImageInfo image)
     {
         this.image = image;
         return this;
     }
-    
+
     public MessageEmbedImpl setFields(List<Field> fields)
     {
         this.fields = fields;
         return this;
     }
-    
+
     public MessageEmbedImpl setColor(Color color)
     {
         this.color = color;
         return this;
     }
-    
+
     public MessageEmbedImpl setTimestamp(OffsetDateTime timestamp)
     {
         this.timestamp = timestamp;
         return this;
     }
-    
+
     @Override
     public boolean equals(Object o)
     {
@@ -237,7 +237,7 @@ public class MessageEmbedImpl implements MessageEmbed
     {
         return "EmbedMessage";
     }
-    
+
     public JSONObject toJSONObject()
     {
         JSONObject obj = new JSONObject();

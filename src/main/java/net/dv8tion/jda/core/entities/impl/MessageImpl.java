@@ -50,7 +50,6 @@ public class MessageImpl implements Message
     private String subContent = null;
     private String strippedContent = null;
     private User author;
-    private OffsetDateTime time;
     private OffsetDateTime editedTime = null;
     private List<User> mentionedUsers = new LinkedList<>();
     private List<TextChannel> mentionedChannels = new LinkedList<>();
@@ -220,7 +219,7 @@ public class MessageImpl implements Message
             String[] keys = new String[] {"*", "_", "`", "~~"};
 
             //find all tokens (formatting strings described above)
-            TreeSet<FormatToken> tokens = new TreeSet<>((t1, t2) -> Integer.compare(t1.start, t2.start));
+            TreeSet<FormatToken> tokens = new TreeSet<>(Comparator.comparingInt(FormatToken::getStart));
             for (String key : keys)
             {
                 Matcher matcher = Pattern.compile(Pattern.quote(key)).matcher(tmp);
@@ -270,7 +269,7 @@ public class MessageImpl implements Message
             }
 
             //sort tags to remove by their start-index and iteratively build the remaining string
-            Collections.sort(toRemove, (t1, t2) -> Integer.compare(t1.start, t2.start));
+            toRemove.sort(Comparator.comparingInt(FormatToken::getStart));
             StringBuilder out = new StringBuilder();
             int currIndex = 0;
             for (FormatToken formatToken : toRemove)
@@ -511,7 +510,6 @@ public class MessageImpl implements Message
 
     public MessageImpl setTime(OffsetDateTime time)
     {
-        this.time = time;
         return this;
     }
 
@@ -582,16 +580,6 @@ public class MessageImpl implements Message
         return obj;
     }
 
-    private void checkPermission(Permission permission)
-    {
-        if (channel.getType() == ChannelType.TEXT)
-        {
-            Channel location = (Channel) channel;
-            if (!location.getGuild().getSelfMember().hasPermission(location, permission))
-                throw new PermissionException(permission);
-        }
-    }
-
     private void checkFake(IFakeable o, String name)
     {
         if (o.isFake())
@@ -631,12 +619,17 @@ public class MessageImpl implements Message
     }
 
     private static class FormatToken {
-        public final String format;
-        public final int start;
+        private final String format;
+        private final int start;
 
         public FormatToken(String format, int start) {
             this.format = format;
             this.start = start;
+        }
+
+        public int getStart()
+        {
+            return this.start;
         }
     }
 }

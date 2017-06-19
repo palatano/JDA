@@ -49,7 +49,7 @@ import java.util.*;
 import java.util.zip.DataFormatException;
 import java.util.zip.Inflater;
 
-public class WebSocketClient extends WebSocketAdapter implements WebSocketListener
+public class WebSocketClient extends WebSocketAdapter
 {
     public static final SimpleLog LOG = SimpleLog.getLog("JDASocket");
     public static final int DISCORD_GATEWAY_VERSION = 6;
@@ -621,8 +621,8 @@ public class WebSocketClient extends WebSocketAdapter implements WebSocketListen
         api.getEntityBuilder().clearCache();
         api.getEventCache().clear();
         api.getGuildLock().clear();
-        this.<ReadyHandler>getHandler("READY").clearCache();
-        this.<GuildMembersChunkHandler>getHandler("GUILD_MEMBERS_CHUNK").clearCache();
+        this.getHandler("READY", ReadyHandler.class).clearCache();
+        this.getHandler("GUILD_MEMBERS_CHUNK", GuildMembersChunkHandler.class).clearCache();
 
         if (api.getAccountType() == AccountType.CLIENT)
         {
@@ -909,9 +909,14 @@ public class WebSocketClient extends WebSocketAdapter implements WebSocketListen
         return handlers;
     }
 
-    public <T> T getHandler(String type)
+    public SocketHandler getHandler(String type)
     {
-        return (T) handlers.get(type);
+        return handlers.get(type);
+    }
+
+    public <T extends SocketHandler> T getHandler(String type, Class<T> clazz)
+    {
+        return clazz.cast(getHandler(type));
     }
 
     private void setupHandlers()

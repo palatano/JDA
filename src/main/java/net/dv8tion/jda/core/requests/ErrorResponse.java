@@ -70,7 +70,6 @@ public enum ErrorResponse
 
     SERVER_ERROR(           0, "Discord encountered an internal server error! Not good!");
 
-
     private final int code;
     private final String meaning;
     ErrorResponse(int code, String meaning)

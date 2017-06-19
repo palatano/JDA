@@ -55,7 +55,8 @@ public class ReactionPaginationAction extends PaginationAction<User, ReactionPag
      */
     public ReactionPaginationAction(MessageReaction reaction)
     {
-        super(reaction.getJDA(), Route.Messages.GET_REACTION_USERS.compile(reaction.getChannel().getId(), reaction.getMessageId(), getCode(reaction)), 1, 100, 100);
+        super(reaction.getJDA(), ReactionPaginationAction.class, 1, 100, 100);
+
         this.reaction = reaction;
     }
 
@@ -106,7 +107,7 @@ public class ReactionPaginationAction extends PaginationAction<User, ReactionPag
             return;
         }
 
-        final EntityBuilder builder = api.getEntityBuilder();;
+        final EntityBuilder builder = api.getEntityBuilder();
         final JSONArray array = response.getArray();
         final List<User> users = new LinkedList<>();
         for (int i = 0; i < array.length(); i++)

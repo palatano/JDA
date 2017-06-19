@@ -34,8 +34,9 @@ import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
 import net.dv8tion.jda.core.requests.restaction.ChannelAction;
 import net.dv8tion.jda.core.requests.restaction.RoleAction;
 import net.dv8tion.jda.core.requests.restaction.WebhookAction;
-import net.dv8tion.jda.core.requests.restaction.order.ChannelOrderAction;
 import net.dv8tion.jda.core.requests.restaction.order.RoleOrderAction;
+import net.dv8tion.jda.core.requests.restaction.order.TextChannelOrderAction;
+import net.dv8tion.jda.core.requests.restaction.order.VoiceChannelOrderAction;
 import net.dv8tion.jda.core.utils.MiscUtil;
 import net.dv8tion.jda.core.utils.PermissionUtil;
 import net.dv8tion.jda.core.utils.Checks;
@@ -2025,7 +2026,7 @@ public class GuildController
                     }
 
                     // put emote into cache
-                    ((GuildImpl) guild).getEmoteMap().put(id, emote);
+                    guild.getEmoteMap().put(id, emote);
 
                     request.onSuccess(emote);
                 }
@@ -2053,9 +2054,9 @@ public class GuildController
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.order.ChannelOrderAction ChannelOrderAction} - Type: {@link net.dv8tion.jda.core.entities.TextChannel TextChannel}
      */
-    public ChannelOrderAction<TextChannel> modifyTextChannelPositions()
+    public TextChannelOrderAction modifyTextChannelPositions()
     {
-        return new ChannelOrderAction<>(guild, ChannelType.TEXT);
+        return new TextChannelOrderAction(guild);
     }
 
     /**
@@ -2076,9 +2077,9 @@ public class GuildController
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.order.ChannelOrderAction ChannelOrderAction} - Type: {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannel}
      */
-    public ChannelOrderAction<VoiceChannel> modifyVoiceChannelPositions()
+    public VoiceChannelOrderAction modifyVoiceChannelPositions()
     {
-        return new ChannelOrderAction<>(guild, ChannelType.VOICE);
+        return new VoiceChannelOrderAction(guild);
     }
 
     /**

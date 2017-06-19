@@ -1,1 +1,5 @@
 rootProject.name = 'JDA'
+
+include 'examples'
+
+project(":examples").name = "JDA examples"

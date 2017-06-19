@@ -74,8 +74,8 @@ public class AnnotatedEventManager implements IEventManager
         return Collections.unmodifiableList(new LinkedList<>(listeners));
     }
 
-    @Override
     @SuppressWarnings("unchecked")
+    @Override
     public void handle(Event event)
     {
         Class<? extends Event> eventClass = event.getClass();
@@ -84,16 +84,16 @@ public class AnnotatedEventManager implements IEventManager
             Map<Object, List<Method>> listeners = methods.get(eventClass);
             if (listeners != null)
             {
-                listeners.entrySet().forEach(e -> e.getValue().forEach(method ->
+                listeners.forEach((key, value) -> value.forEach(method ->
                 {
                     try
                     {
                         method.setAccessible(true);
-                        method.invoke(e.getKey(), event);
+                        method.invoke(key, event);
                     }
-                    catch (IllegalAccessException | InvocationTargetException e1)
+                    catch (IllegalAccessException | InvocationTargetException e)
                     {
-                        JDAImpl.LOG.log(e1);
+                        JDAImpl.LOG.log(e);
                     }
                     catch (Throwable throwable)
                     {
@@ -113,7 +113,7 @@ public class AnnotatedEventManager implements IEventManager
         for (Object listener : listeners)
         {
             boolean isClass = listener instanceof Class;
-            Class<?> c = isClass ? (Class) listener : listener.getClass();
+            Class<?> c = isClass ? (Class<?>) listener : listener.getClass();
             Method[] allMethods = c.getDeclaredMethods();
             for (Method m : allMethods)
             {
