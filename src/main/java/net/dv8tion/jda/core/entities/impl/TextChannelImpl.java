@@ -412,6 +412,13 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannelImpl> implem
         return chanTime.compareTo(thisTime);
     }
 
+    @Override
+    public boolean dispose()
+    {
+        guild.getJDA().getTextChannelMap().remove(id);
+        return super.dispose();
+    }
+
     // -- Setters --
 
     public TextChannelImpl setTopic(String topic)
