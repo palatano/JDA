@@ -146,6 +146,9 @@ public interface Guild extends ISnowflake
      * @param  user
      *         The user to determine whether or not they are a member of this guild.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return True - if this user is present in this guild.
      */
     boolean isMember(User user);
@@ -153,6 +156,9 @@ public interface Guild extends ISnowflake
     /**
      * Gets the {@link net.dv8tion.jda.core.entities.Member Member} object of the currently logged in account in this guild.
      * <br>This is basically {@link net.dv8tion.jda.core.JDA#getSelfUser()} being provided to {@link #getMember(User)}.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return The Member object of the currently logged in account.
      */
@@ -165,6 +171,9 @@ public interface Guild extends ISnowflake
      *
      * @param  user
      *         The {@link net.dv8tion.jda.core.entities.User User} which to retrieve a related Member object for.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.Member Member} for the related {@link net.dv8tion.jda.core.entities.User User}.
      */
@@ -181,6 +190,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.NumberFormatException
      *         If the provided {@code id} cannot be parsed by {@link Long#parseLong(String)}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.Member Member} with the related {@code userId}.
      */
@@ -195,6 +206,9 @@ public interface Guild extends ISnowflake
      * @param  userId
      *         The Discord id of the User for which a Member object is requested.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.Member Member} with the related {@code userId}.
      */
     Member getMemberById(long userId);
@@ -202,6 +216,9 @@ public interface Guild extends ISnowflake
     /**
      * A list of all {@link net.dv8tion.jda.core.entities.Member Members} in this Guild.
      * <br>The Members are not provided in any particular order.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Immutable list of all members in this Guild.
      */
@@ -217,6 +234,9 @@ public interface Guild extends ISnowflake
      * @param  ignoreCase
      *         Determines if the comparison ignores case when comparing. True - case insensitive.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return Possibly-empty immutable list of all Members with the same name as the name provided.
      */
     List<Member> getMembersByName(String name, boolean ignoreCase);
@@ -230,6 +250,9 @@ public interface Guild extends ISnowflake
      *         The nickname used to filter the returned Members.
      * @param  ignoreCase
      *         Determines if the comparison ignores case when comparing. True - case insensitive.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-empty immutable list of all Members with the same nickname as the nickname provided.
      */
@@ -246,6 +269,9 @@ public interface Guild extends ISnowflake
      * @param  ignoreCase
      *         Determines if the comparison ignores case when comparing. True - case insensitive.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return Possibly-empty immutable list of all Members with the same effective name as the name provided.
      */
     List<Member> getMembersByEffectiveName(String name, boolean ignoreCase);
@@ -261,6 +287,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.IllegalArgumentException
      *         If a provided {@link net.dv8tion.jda.core.entities.Role Role} is from a different guild or null.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-empty immutable list of Members with all provided Roles.
      */
@@ -277,6 +305,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.IllegalArgumentException
      *         If a provided {@link net.dv8tion.jda.core.entities.Role Role} is from a different guild or null.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-empty immutable list of Members with all provided Roles.
      */
@@ -294,6 +324,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.NumberFormatException
      *         If the provided {@code id} cannot be parsed by {@link Long#parseLong(String)}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.TextChannel TextChannel} with matching id.
      */
@@ -309,6 +341,9 @@ public interface Guild extends ISnowflake
      * @param  id
      *         The id of the {@link net.dv8tion.jda.core.entities.TextChannel TextChannel}.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.TextChannel TextChannel} with matching id.
      */
     TextChannel getTextChannelById(long id);
@@ -316,6 +351,9 @@ public interface Guild extends ISnowflake
     /**
      * Gets all {@link net.dv8tion.jda.core.entities.TextChannel TextChannels} in this {@link net.dv8tion.jda.core.entities.Guild Guild}.
      * <br>The channels returned will be sorted according to their position.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return An immutable List of all {@link net.dv8tion.jda.core.entities.TextChannel TextChannels} in this Guild.
      */
@@ -330,6 +368,9 @@ public interface Guild extends ISnowflake
      *         The name used to filter the returned {@link net.dv8tion.jda.core.entities.TextChannel TextChannels}.
      * @param  ignoreCase
      *         Determines if the comparison ignores case when comparing. True - case insensitive.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-empty immutable list of all TextChannels names that match the provided name.
      */
@@ -347,6 +388,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.NumberFormatException
      *         If the provided {@code id} cannot be parsed by {@link Long#parseLong(String)}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannel} with matching id.
      */
@@ -362,6 +405,9 @@ public interface Guild extends ISnowflake
      * @param  id
      *         The id of the {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannel}.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannel} with matching id.
      */
     VoiceChannel getVoiceChannelById(long id);
@@ -369,6 +415,9 @@ public interface Guild extends ISnowflake
     /**
      * Gets all {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannels} in this {@link net.dv8tion.jda.core.entities.Guild Guild}.
      * <br>The channels returned will be sorted according to their position.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return An immutable List of {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannels}.
      */
@@ -383,6 +432,9 @@ public interface Guild extends ISnowflake
      *         The name used to filter the returned {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannels}.
      * @param  ignoreCase
      *         Determines if the comparison ignores case when comparing. True - case insensitive.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-empty immutable list of all VoiceChannel names that match the provided name.
      */
@@ -399,6 +451,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.NumberFormatException
      *         If the provided {@code id} cannot be parsed by {@link Long#parseLong(String)}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.Role Role} with matching id.
      */
@@ -413,6 +467,9 @@ public interface Guild extends ISnowflake
      * @param  id
      *         The id of the {@link net.dv8tion.jda.core.entities.Role Role}.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.Role Role} with matching id.
      */
     Role getRoleById(long id);
@@ -420,6 +477,9 @@ public interface Guild extends ISnowflake
     /**
      * Gets all {@link net.dv8tion.jda.core.entities.Role Roles} in this {@link net.dv8tion.jda.core.entities.Guild Guild}.
      * <br>The roles returned will be sorted according to their position.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return An immutable List of {@link net.dv8tion.jda.core.entities.Role Roles}.
      */
@@ -434,6 +494,9 @@ public interface Guild extends ISnowflake
      *         The name used to filter the returned {@link net.dv8tion.jda.core.entities.Role Roles}.
      * @param  ignoreCase
      *         Determines if the comparison ignores case when comparing. True - case insensitive.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-empty immutable list of all Role names that match the provided name.
      */
@@ -452,6 +515,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.NumberFormatException
      *         If the provided {@code id} cannot be parsed by {@link Long#parseLong(String)}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return An Emote matching the specified Id.
      */
@@ -468,6 +533,9 @@ public interface Guild extends ISnowflake
      * @param  id
      *         the emote id
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return An Emote matching the specified Id.
      */
     Emote getEmoteById(long id);
@@ -477,6 +545,9 @@ public interface Guild extends ISnowflake
      * <br>Emotes are not ordered in any specific way in the returned list.
      *
      * <p><b>Unicode emojis are not included as {@link net.dv8tion.jda.core.entities.Emote Emote}!</b>
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return An immutable List of {@link net.dv8tion.jda.core.entities.Emote Emotes}.
      */
@@ -493,6 +564,9 @@ public interface Guild extends ISnowflake
      *         The name used to filter the returned {@link net.dv8tion.jda.core.entities.Emote Emotes}.
      * @param  ignoreCase
      *         Determines if the comparison ignores case when comparing. True - case insensitive.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return Possibly-empty immutable list of all Role names that match the provided name.
      */
@@ -517,6 +591,8 @@ public interface Guild extends ISnowflake
      *         If the logged in account does not have the {@link net.dv8tion.jda.core.Permission#BAN_MEMBERS} permission.
      * @throws net.dv8tion.jda.core.exceptions.GuildUnavailableException
      *         If the guild is temporarily not {@link #isAvailable() available}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@literal List<}{@link net.dv8tion.jda.core.entities.User User}{@literal >}
      *         <br>An unmodifiable list of all users currently banned from this Guild
@@ -546,6 +622,8 @@ public interface Guild extends ISnowflake
      *         If the guild is temporarily not {@link #isAvailable() available}
      * @throws IllegalArgumentException
      *         If the provided days are less than {@code 1}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: Integer
      *         <br>The amount of Members that would be affected.
@@ -581,8 +659,8 @@ public interface Guild extends ISnowflake
      * would like batch change functionality (change more than 1 thing in a single REST call) use the Updatable manager
      * system. For Guild: {@link #getManagerUpdatable()}.
      *
-     * @throws net.dv8tion.jda.core.exceptions.GuildUnavailableException
-     *         if the guild is temporarily unavailable ({@link #isAvailable()})
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return The Manager of this Guild
      */
@@ -595,8 +673,8 @@ public interface Guild extends ISnowflake
      * sent to Discord. This manager type is great for clients which wish to display all modifiable fields and update
      * the entity using an "apply" button or something similar.
      *
-     * @throws net.dv8tion.jda.core.exceptions.GuildUnavailableException
-     *         if the guild is temporarily unavailable ({@link #isAvailable()})
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return The Updatable Manager of this Guild
      */
@@ -607,6 +685,9 @@ public interface Guild extends ISnowflake
      * is used to perform all admin style functions in the Guild. A few include: kicking, banning, changing member roles,
      * changing role and channel positions, and more. Checkout the {@link net.dv8tion.jda.core.managers.GuildController GuildController}
      * class for more info.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return The controller for this Guild.
      */
@@ -623,6 +704,8 @@ public interface Guild extends ISnowflake
      *         If the currently logged in account is not from {@link net.dv8tion.jda.core.AccountType#CLIENT AccountType.CLIENT}
      * @throws net.dv8tion.jda.core.exceptions.GuildUnavailableException
      *         If this Guild is not currently {@link #isAvailable() available}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.client.requests.restaction.pagination.MentionPaginationAction MentionPaginationAction}
      *
@@ -660,6 +743,8 @@ public interface Guild extends ISnowflake
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         If the currently logged in account
      *         does not have the permission {@link net.dv8tion.jda.core.Permission#VIEW_AUDIT_LOGS VIEW_AUDIT_LOGS}
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.pagination.AuditLogPaginationAction AuditLogPaginationAction}
      */
@@ -672,6 +757,8 @@ public interface Guild extends ISnowflake
      *
      * @throws java.lang.IllegalStateException
      *         Thrown if the currently logged in account is the Owner of this Guild.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link java.lang.Void}
      */
@@ -685,6 +772,8 @@ public interface Guild extends ISnowflake
      *         Thrown if the currently logged in account is not the owner of this Guild.
      * @throws java.lang.IllegalStateException
      *         If the currently logged in account has MFA enabled. ({@link net.dv8tion.jda.core.entities.SelfUser#isMfaEnabled()}).
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.RestAction} - Type: {@link java.lang.Void}
      */
@@ -704,6 +793,8 @@ public interface Guild extends ISnowflake
      *         Thrown if the currently logged in account is not the owner of this Guild.
      * @throws java.lang.IllegalArgumentException
      *         If the provided {@code mfaCode} is {@code null} or empty when {@link SelfUser#isMfaEnabled()} is true.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.RestAction} - Type: {@link java.lang.Void}
      */
@@ -713,12 +804,18 @@ public interface Guild extends ISnowflake
      * Returns the {@link net.dv8tion.jda.core.managers.AudioManager AudioManager} that represents the
      * audio connection for this Guild.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
+     *
      * @return The AudioManager for this Guild.
      */
     AudioManager getAudioManager();
 
     /**
      * Returns the {@link net.dv8tion.jda.core.JDA JDA} instance of this Guild
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Guild was disposed from JDA cache invalidation
      *
      * @return the corresponding JDA instance
      */

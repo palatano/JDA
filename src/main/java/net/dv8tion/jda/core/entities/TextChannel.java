@@ -62,6 +62,9 @@ public interface TextChannel extends Channel, MessageChannel, Comparable<TextCha
      *     <br>if we were removed from the guild</li>
      * </ul>
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
+     *
      * @return {@link net.dv8tion.jda.core.requests.RestAction} - Type: List{@literal <}{@link net.dv8tion.jda.core.entities.Webhook Webhook}{@literal >}
      *         <br>An immutable list of Webhook attached to this channel
      */
@@ -104,6 +107,8 @@ public interface TextChannel extends Channel, MessageChannel, Comparable<TextCha
      *         If the size of the list less than 2 or more than 100 messages.
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         If this account does not have MANAGE_MESSAGES
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.AuditableRestAction AuditableRestAction}
      *
@@ -151,6 +156,8 @@ public interface TextChannel extends Channel, MessageChannel, Comparable<TextCha
      *         If any of the provided ids cannot be parsed by {@link Long#parseLong(String)}
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         If this account does not have MANAGE_MESSAGES
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.AuditableRestAction AuditableRestAction}
      *
@@ -187,6 +194,8 @@ public interface TextChannel extends Channel, MessageChannel, Comparable<TextCha
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         If the currently logged in account does not have
      *         {@link net.dv8tion.jda.core.Permission#MANAGE_WEBHOOKS Permission.MANAGE_WEBHOOKS} in this channel.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.AuditableRestAction AuditableRestAction}
      */
@@ -220,6 +229,8 @@ public interface TextChannel extends Channel, MessageChannel, Comparable<TextCha
      *         {@link net.dv8tion.jda.core.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel.
      * @throws java.lang.IllegalArgumentException
      *         If the provided {@code id} is {@code null} or empty.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.AuditableRestAction AuditableRestAction}
      */
@@ -251,6 +262,8 @@ public interface TextChannel extends Channel, MessageChannel, Comparable<TextCha
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         If the currently logged in account does not have
      *         {@link net.dv8tion.jda.core.Permission#MESSAGE_MANAGE Permission.MESSAGE_MANAGE} in this channel.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.AuditableRestAction AuditableRestAction}
      */
@@ -264,6 +277,9 @@ public interface TextChannel extends Channel, MessageChannel, Comparable<TextCha
      * <br>This is an overload of {@link #canTalk(Member)} with the SelfMember.
      * <br>Checks for both {@link net.dv8tion.jda.core.Permission#MESSAGE_READ Permission.MESSAGE_READ} and
      * {@link net.dv8tion.jda.core.Permission#MESSAGE_WRITE Permission.MESSAGE_WRITE}.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return True, if we are able to read and send messages in this channel
      */

@@ -60,6 +60,9 @@ public interface Channel extends ISnowflake
      * In {@link net.dv8tion.jda.core.entities.VoiceChannel VoiceChannels},
      * this returns all Members that joined that VoiceChannel.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If the Guild was disposed from JDA cache invalidation
+     *
      * @return A List of {@link net.dv8tion.jda.core.entities.Member Members} that are in this Channel.
      */
     List<Member> getMembers();
@@ -88,6 +91,9 @@ public interface Channel extends ISnowflake
     /**
      * Returns the {@link net.dv8tion.jda.core.JDA JDA} instance of this Channel
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
+     *
      * @return the corresponding JDA instance
      */
     JDA getJDA();
@@ -100,6 +106,9 @@ public interface Channel extends ISnowflake
      * @param  member
      *         The {@link net.dv8tion.jda.core.entities.Member Member} whose
      *         {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverride} is requested.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverride}
      *         relating to the provided {@link net.dv8tion.jda.core.entities.Member Member}.
@@ -114,6 +123,9 @@ public interface Channel extends ISnowflake
      * @param  role
      *         The {@link net.dv8tion.jda.core.entities.User Role} whose {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverride} is requested.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
+     *
      * @return Possibly-null {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverride}
      *         relating to the provided {@link net.dv8tion.jda.core.entities.Role Role}.
      */
@@ -126,6 +138,9 @@ public interface Channel extends ISnowflake
      * If you would like only {@link net.dv8tion.jda.core.entities.Member Member} overrides or only {@link net.dv8tion.jda.core.entities.Role Role}
      * overrides, use {@link #getMemberPermissionOverrides()} or {@link #getRolePermissionOverrides()} respectively.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
+     *
      * @return Possibly-empty list of all {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverrides}
      *         for this {@link net.dv8tion.jda.core.entities.Channel Channel}.
      */
@@ -134,6 +149,9 @@ public interface Channel extends ISnowflake
     /**
      * Gets all of the {@link net.dv8tion.jda.core.entities.Member Member} {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverrides}
      * that are part of this {@link net.dv8tion.jda.core.entities.Channel Channel}.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return Possibly-empty list of all {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverrides}
      *         for {@link net.dv8tion.jda.core.entities.Member Member}
@@ -145,6 +163,9 @@ public interface Channel extends ISnowflake
      * Gets all of the {@link net.dv8tion.jda.core.entities.Role Role} {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverrides}
      * that are part of this {@link net.dv8tion.jda.core.entities.Channel Channel}.
      *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
+     *
      * @return Possibly-empty list of all {@link net.dv8tion.jda.core.entities.PermissionOverride PermissionOverrides}
      *         for {@link net.dv8tion.jda.core.entities.Role Roles}
      *         for this {@link net.dv8tion.jda.core.entities.Channel Channel}.
@@ -154,6 +175,9 @@ public interface Channel extends ISnowflake
     /**
      * Returns the {@link net.dv8tion.jda.core.managers.ChannelManager ChannelManager} for this Channel.
      * In the ChannelManager, you can modify the name, topic and position of this Channel.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return The ChannelManager of this Channel
      *
@@ -165,6 +189,9 @@ public interface Channel extends ISnowflake
      * Returns the {@link net.dv8tion.jda.core.managers.ChannelManagerUpdatable ChannelManagerUpdatable} for this Channel.
      * In the ChannelManager, you can modify the name, topic and position of this Channel.
      * <br>This can be used to bulk update channel settings.
+     *
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return The ChannelManagerUpdatable of this Channel
      *
@@ -191,6 +218,8 @@ public interface Channel extends ISnowflake
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         if the currently logged in account doesn't have {@link net.dv8tion.jda.core.Permission#MANAGE_CHANNEL MANAGE_CHANNEL}
      *         for the channel.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.AuditableRestAction AuditableRestAction}
      */
@@ -218,6 +247,8 @@ public interface Channel extends ISnowflake
      *         if the specified Member is null or the Member is not from {@link #getGuild()}
      * @throws java.lang.IllegalStateException
      *         If the specified Member already has a PermissionOverride. Use {@link #getPermissionOverride(Member)} to retrieve it.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.PermissionOverrideAction PermissionOverrideAction}
      *         The newly created PermissionOverride for the specified Role
@@ -248,6 +279,8 @@ public interface Channel extends ISnowflake
      *         if the specified Role is null or the Role is not from {@link #getGuild()}
      * @throws java.lang.IllegalStateException
      *         If the specified Role already has a PermissionOverride. Use {@link #getPermissionOverride(Role)} to retrieve it.
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.restaction.PermissionOverrideAction PermissionOverrideAction}
      *         The newly created PermissionOverride for the specified Role
@@ -263,6 +296,8 @@ public interface Channel extends ISnowflake
      *
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         if the account does not have {@link net.dv8tion.jda.core.Permission#CREATE_INSTANT_INVITE CREATE_INSTANT_INVITE} in this channel
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return A new {@link net.dv8tion.jda.core.requests.restaction.InviteAction InviteAction}
      * 
@@ -277,6 +312,8 @@ public interface Channel extends ISnowflake
      *
      * @throws net.dv8tion.jda.core.exceptions.PermissionException
      *         if the account does not have {@link net.dv8tion.jda.core.Permission#MANAGE_CHANNEL MANAGE_CHANNEL} in this channel
+     * @throws net.dv8tion.jda.core.exceptions.DisposedException
+     *         If this Channel was disposed from JDA cache invalidation
      *
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: List{@literal <}{@link net.dv8tion.jda.core.entities.Invite Invite}{@literal >}
      *         <br>The list of expanded Invite objects
