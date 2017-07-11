@@ -244,7 +244,7 @@ public class PresenceImpl implements Presence
     {
         api.getClient().send(new JSONObject()
             .put("d", data)
-            .put("op", 3).toString());
+            .put("op", 3));
     }
 
 }
