@@ -25,7 +25,7 @@ plugins {
     id 'maven-publish'
     id 'signing'
     id 'com.github.ben-manes.versions' version '0.15.0'
-    id 'com.github.johnrengelman.shadow' version '2.0.0'
+    id 'com.github.johnrengelman.shadow' version '2.0.1'
 }
 
 def versionObj = new Version(major: 3, minor: 1, revision: 1)
@@ -52,15 +52,8 @@ dependencies {
     compile 'net.java.dev.jna:jna:4.4.0'
 
     //Web Connection Support
-    compile 'com.neovisionaries:nv-websocket-client:2.2'
-<<<<<<< master
+    compile 'com.neovisionaries:nv-websocket-client:2.3'
     compile 'com.squareup.okhttp3:okhttp:3.8.1'
-=======
-    compile ( 'com.mashape.unirest:unirest-java:1.4.9' ) {
-        exclude group: 'junit', module: 'junit'
-    }
->>>>>>> Small cleanup
-
 }
 
 task sourcesForRelease(type: Copy) {
@@ -196,7 +189,7 @@ String getProjectProperty(String propertyName)
 task wrapper(type: Wrapper) {
     group = 'build setup'
     description = 'Generates Gradle wrapper files.'
-    gradleVersion = '4.0'
+    gradleVersion = '4.0.1'
 }
 
 build {
