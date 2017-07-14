@@ -27,7 +27,7 @@ import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
  * @since  3.0
  * @author Florian Spieß
  */
-public interface Webhook extends ISnowflake
+public interface Webhook extends ISnowflake, DisposingState<Webhook>
 {
 
     /**

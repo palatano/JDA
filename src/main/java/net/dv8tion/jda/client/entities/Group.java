@@ -16,13 +16,14 @@
 
 package net.dv8tion.jda.client.entities;
 
+import net.dv8tion.jda.core.entities.DisposingState;
 import net.dv8tion.jda.core.entities.MessageChannel;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.requests.RestAction;
 
 import java.util.List;
 
-public interface Group extends MessageChannel, CallableChannel
+public interface Group extends MessageChannel, CallableChannel, DisposingState<Group>
 {
     /**
      * Returns the name set for this group.<br>

@@ -32,7 +32,7 @@ import java.util.List;
  * @since  2.2
  * @author Florian Spieß
  */
-public interface Emote extends ISnowflake, IMentionable, IFakeable
+public interface Emote extends ISnowflake, IMentionable, IFakeable, DisposingState<Emote>
 {
 
     /**

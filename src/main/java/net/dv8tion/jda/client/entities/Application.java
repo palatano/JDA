@@ -20,6 +20,7 @@ import net.dv8tion.jda.client.managers.ApplicationManager;
 import net.dv8tion.jda.client.managers.ApplicationManagerUpdatable;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
+import net.dv8tion.jda.core.entities.DisposingState;
 import net.dv8tion.jda.core.entities.ISnowflake;
 import net.dv8tion.jda.core.requests.RestAction;
 
@@ -36,7 +37,7 @@ import java.util.List;
  * @see    net.dv8tion.jda.client.JDAClient#getApplications() JDAClient.getApplications()
  * @see    net.dv8tion.jda.client.JDAClient#getApplicationById(String) JDAClient.getApplicationById(String)
  */
-public interface Application extends ISnowflake
+public interface Application extends ISnowflake, DisposingState<Application>
 {
 
     /**

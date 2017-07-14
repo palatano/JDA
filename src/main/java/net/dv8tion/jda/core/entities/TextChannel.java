@@ -32,7 +32,7 @@ import java.util.List;
  * {@link net.dv8tion.jda.core.entities.impl.TextChannelImpl TextChannelImpl}.
  * <br>Note: Internal implementation should not be used directly.
  */
-public interface TextChannel extends Channel, MessageChannel, Comparable<TextChannel>, IMentionable
+public interface TextChannel extends Channel, MessageChannel, IMentionable, Comparable<TextChannel>, DisposingState<TextChannel>
 {
     /**
      * The topic set for this TextChannel.
