@@ -50,7 +50,7 @@ sourceSets {
 
 dependencies {
     //General Utility
-    compile 'org.apache.commons:commons-lang3:3.5'
+//    compile 'org.apache.commons:commons-lang3:3.5'
     compile 'org.apache.commons:commons-collections4:4.1'
     compile 'org.json:json:20160810'
     compile 'net.sf.trove4j:trove4j:3.0.3'
