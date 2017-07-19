@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -252,16 +252,16 @@ public class EntityBuilder
                 if (api.getAccountType() == AccountType.CLIENT)
                 {
                     JSONObject obj = new JSONObject()
-                            .put("op", 12)
+                            .put("op", WebSocketCode.GUILD_SYNC)
                             .put("guild_id", guildObj.getId());
                     api.getClient().chunkOrSyncRequest(obj);
                 }
                 JSONObject obj = new JSONObject()
-                        .put("op", 8)
+                        .put("op", WebSocketCode.MEMBER_CHUNK_REQUEST)
                         .put("d", new JSONObject()
-                                .put("guild_id", id)
-                                .put("query","")
-                                .put("limit", 0)
+                            .put("guild_id", id)
+                            .put("query","")
+                            .put("limit", 0)
                         );
                 api.getClient().chunkOrSyncRequest(obj);
             }
@@ -1161,15 +1161,11 @@ public class EntityBuilder
     {
         final String code = object.getString("code");
 
-        final JSONObject channelObject = object.getJSONObject("channel");
-        final String channelTypeName = channelObject.getString("type");
         final User inviter = object.has("inviter") ? this.createFakeUser(object.getJSONObject("inviter"), false) : null;
 
-        final ChannelType channelType = channelTypeName.equals("text")
-            ? ChannelType.TEXT
-            : channelTypeName.equals("voice")
-                ? ChannelType.VOICE
-                : ChannelType.UNKNOWN;
+        final JSONObject channelObject = object.getJSONObject("channel");
+
+        final ChannelType channelType = ChannelType.fromId(channelObject.getInt("type"));
         final long channelId = channelObject.getLong("id");
         final String channelName = channelObject.getString("name");
 

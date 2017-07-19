@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,7 +63,7 @@ public class ApplicationImpl implements Application
         if (this.hasBot())
             return new RestAction.EmptyRestAction<>(getJDA(), this.bot);
 
-        return new RestAction<Application.Bot>(this.api, Route.Applications.CREATE_BOT.compile(getId()), null)
+        return new RestAction<Application.Bot>(this.api, Route.Applications.CREATE_BOT.compile(getId()))
         {
             @Override
             protected void handleResponse(final Response response, final Request<Application.Bot> request)
@@ -79,7 +79,7 @@ public class ApplicationImpl implements Application
     @Override
     public RestAction<Void> delete()
     {
-        return new RestAction<Void>(this.api, Route.Applications.DELETE_APPLICATION.compile(getId()), null)
+        return new RestAction<Void>(this.api, Route.Applications.DELETE_APPLICATION.compile(getId()))
         {
             @Override
             protected void handleResponse(final Response response, final Request<Void> request)
@@ -219,7 +219,7 @@ public class ApplicationImpl implements Application
     public RestAction<Application> resetSecret()
     {
         Route.CompiledRoute route = Route.Applications.RESET_BOT_TOKEN.compile(getId());
-        return new RestAction<Application>(this.api, route, null)
+        return new RestAction<Application>(this.api, route)
         {
             @Override
             protected void handleResponse(final Response response, final Request<Application> request)
@@ -392,7 +392,7 @@ public class ApplicationImpl implements Application
         public RestAction<Bot> resetToken()
         {
             Route.CompiledRoute route = Route.Applications.RESET_BOT_TOKEN.compile(getId());
-            return new RestAction<Bot>(getJDA(), route, null)
+            return new RestAction<Bot>(getJDA(), route)
             {
                 @Override
                 protected void handleResponse(final Response response, final Request<Bot> request)

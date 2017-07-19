@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -162,7 +162,7 @@ public class EmoteImpl implements Emote
             throw new PermissionException(Permission.MANAGE_EMOTES);
 
         Route.CompiledRoute route = Route.Emotes.DELETE_EMOTE.compile(getGuild().getId(), getId());
-        return new AuditableRestAction<Void>(getJDA(), route, null)
+        return new AuditableRestAction<Void>(getJDA(), route)
         {
             @Override
             protected void handleResponse(Response response, Request<Void> request)

@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
 import net.dv8tion.jda.core.requests.restaction.InviteAction;
 import net.dv8tion.jda.core.requests.restaction.PermissionOverrideAction;
 import net.dv8tion.jda.core.utils.MiscUtil;
-import org.apache.http.util.Args;
+import net.dv8tion.jda.core.utils.Checks;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
@@ -157,7 +157,7 @@ public abstract class AbstractChannelImpl<T extends AbstractChannelImpl<T>> impl
         checkPermission(Permission.MANAGE_CHANNEL);
 
         Route.CompiledRoute route = Route.Channels.DELETE_CHANNEL.compile(getId());
-        return new AuditableRestAction<Void>(getJDA(), route, null)
+        return new AuditableRestAction<Void>(getJDA(), route)
         {
             @Override
             protected void handleResponse(Response response, Request<Void> request)
@@ -174,7 +174,7 @@ public abstract class AbstractChannelImpl<T extends AbstractChannelImpl<T>> impl
     public PermissionOverrideAction createPermissionOverride(Member member)
     {
         checkPermission(Permission.MANAGE_PERMISSIONS);
-        Args.notNull(member, "member");
+        Checks.notNull(member, "member");
 
         if (!guild.equals(member.getGuild()))
             throw new IllegalArgumentException("Provided member is not from the same guild as this channel!");
@@ -189,7 +189,7 @@ public abstract class AbstractChannelImpl<T extends AbstractChannelImpl<T>> impl
     public PermissionOverrideAction createPermissionOverride(Role role)
     {
         checkPermission(Permission.MANAGE_PERMISSIONS);
-        Args.notNull(role, "role");
+        Checks.notNull(role, "role");
 
         if (!guild.equals(role.getGuild()))
             throw new IllegalArgumentException("Provided role is not from the same guild as this channel!");
@@ -217,7 +217,7 @@ public abstract class AbstractChannelImpl<T extends AbstractChannelImpl<T>> impl
 
         final Route.CompiledRoute route = Route.Invites.GET_CHANNEL_INVITES.compile(getId());
 
-        return new RestAction<List<Invite>>(getJDA(), route, null)
+        return new RestAction<List<Invite>>(getJDA(), route)
         {
             @Override
             protected void handleResponse(final Response response, final Request<List<Invite>> request)

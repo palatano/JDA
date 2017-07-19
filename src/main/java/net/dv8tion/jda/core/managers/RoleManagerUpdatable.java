@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import net.dv8tion.jda.core.requests.Request;
 import net.dv8tion.jda.core.requests.Response;
 import net.dv8tion.jda.core.requests.Route;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
-import org.apache.http.util.Args;
+import net.dv8tion.jda.core.utils.Checks;
 import org.json.JSONObject;
 
 import java.awt.Color;
@@ -297,7 +297,7 @@ public class RoleManagerUpdatable
             @Override
             public void checkValue(String value)
             {
-                Args.notNull(value, "name");
+                Checks.notNull(value, "name");
                 if (value.isEmpty() || value.length() > 32)
                     throw new IllegalArgumentException("Provided role name must be 1 to 32 characters in length");
             }
@@ -324,7 +324,7 @@ public class RoleManagerUpdatable
             @Override
             public void checkValue(Boolean value)
             {
-                Args.notNull(value, "hoisted Boolean");
+                Checks.notNull(value, "hoisted Boolean");
             }
         };
 
@@ -333,7 +333,7 @@ public class RoleManagerUpdatable
             @Override
             public void checkValue(Boolean value)
             {
-                Args.notNull(value, "mentionable Boolean");
+                Checks.notNull(value, "mentionable Boolean");
             }
         };
 

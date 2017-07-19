@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,9 @@ public enum Region
     EU_WEST("eu-west", "EU West", false),
     EU_CENTRAL("eu-central", "EU Central", false),
     FRANKFURT("frankfurt", "Frankfurt", false),
+    HONG_KONG("hongkong", "Hong Kong", false),
     LONDON("london", "London", false),
+    RUSSIA("russia", "Russia", false),
     SINGAPORE("singapore", "Singapore", false),
     SYDNEY("sydney", "Sydney", false),
     US_EAST("us-east", "US East", false),

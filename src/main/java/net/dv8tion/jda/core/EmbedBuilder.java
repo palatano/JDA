@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,7 @@ import net.dv8tion.jda.core.entities.EmbedType;
 import net.dv8tion.jda.core.entities.MessageEmbed;
 import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.util.Args;
-
+import net.dv8tion.jda.core.utils.Checks;
 import java.awt.Color;
 import java.time.*;
 import java.time.temporal.TemporalAccessor;
@@ -291,7 +290,7 @@ public class EmbedBuilder
         }
         else
         {
-            Args.check(description.length() <= MessageEmbed.TEXT_MAX_LENGTH,
+            Checks.check(description.length() <= MessageEmbed.TEXT_MAX_LENGTH,
                 "Description cannot be longer than %d characters.", MessageEmbed.TEXT_MAX_LENGTH);
             this.description = new StringBuilder(description);
         }
@@ -316,8 +315,8 @@ public class EmbedBuilder
      */
     public EmbedBuilder appendDescription(CharSequence description)
     {
-        Args.notNull(description, "description");
-        Args.check(this.description.length() + description.length() <= MessageEmbed.TEXT_MAX_LENGTH,
+        Checks.notNull(description, "description");
+        Checks.check(this.description.length() + description.length() <= MessageEmbed.TEXT_MAX_LENGTH,
                 "Description cannot be longer than %d characters.", MessageEmbed.TEXT_MAX_LENGTH);
         this.description.append(description);
         return this;

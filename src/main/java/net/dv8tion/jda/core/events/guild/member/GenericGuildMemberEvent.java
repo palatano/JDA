@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package net.dv8tion.jda.core.events.guild.member;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Guild;
 import net.dv8tion.jda.core.entities.Member;
+import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.guild.GenericGuildEvent;
 
 /**
@@ -35,6 +36,11 @@ public abstract class GenericGuildMemberEvent extends GenericGuildEvent
     {
         super(api, responseNumber, guild);
         this.member = member;
+    }
+
+    public User getUser()
+    {
+        return getMember().getUser();
     }
 
     public Member getMember()

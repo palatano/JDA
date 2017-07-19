@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,7 +135,7 @@ public class VoiceStateUpdateHandler extends SocketHandler
                 // is connected or attempting to connect, them change the channel we expect to be connected to.
                 if (guild.getSelfMember().equals(member))
                 {
-                    AudioManagerImpl mng = (AudioManagerImpl) api.getAudioManagerMap().get(guildId);
+                    AudioManagerImpl mng = api.getAudioManagerMap().get(guildId);
                     if (mng != null && (mng.isConnected() || mng.isAttemptingToConnect()))
                         mng.setConnectedChannel(channel);
                 }

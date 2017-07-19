@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import net.dv8tion.jda.core.requests.Request;
 import net.dv8tion.jda.core.requests.Response;
 import net.dv8tion.jda.core.requests.Route;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
-import org.apache.http.util.Args;
+import net.dv8tion.jda.core.utils.Checks;
 import org.json.JSONObject;
 
 /**
@@ -252,7 +252,7 @@ public class WebhookManagerUpdatable
             @Override
             public void checkValue(String value)
             {
-                Args.notNull(value, "default name");
+                Checks.notNull(value, "default name");
             }
         };
 
@@ -279,8 +279,8 @@ public class WebhookManagerUpdatable
             @Override
             public void checkValue(TextChannel value)
             {
-                Args.notNull(value, "channel");
-                Args.check(value.equals(getChannel()), "Channel is not from the same Guild!");
+                Checks.notNull(value, "channel");
+                Checks.check(value.equals(getChannel()), "Channel is not from the same Guild!");
             }
         };
     }

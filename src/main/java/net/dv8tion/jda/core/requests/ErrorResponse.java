@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,6 +63,7 @@ public enum ErrorResponse
     INVALID_MFA_LEVEL(  50017, "Provided MFA level was invalid."),
     INVALID_PASSWORD(   50018, "Provided password was invalid"),
     INVALID_PIN(        50019, "A message can only be pinned to the channel it was sent in"),
+    INVALID_MESSAGE_TARGET(50021, "Cannot execute action on a system message"),
     INVALID_BULK_DELETE_MESSAGE_AGE(50034, "A Message provided to bulk_delete was older than 2 weeks"),
     MFA_NOT_ENABLED(    60003, "MFA auth required but not enabled"),
     REACTION_BLOCKED(   90001, "Reaction Blocked"),

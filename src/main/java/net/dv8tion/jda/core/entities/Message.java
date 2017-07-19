@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,14 +21,11 @@ import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.requests.Requester;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
-
+import okhttp3.Request;
+import okhttp3.Response;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.URL;
-import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.OffsetDateTime;
@@ -66,6 +63,7 @@ import java.util.regex.Pattern;
  */
 public interface Message extends ISnowflake, Formattable
 {
+    int MAX_FILE_SIZE = 8 << 20; // 8mb
     Pattern INVITE_PATTERN = Pattern.compile("(?:https?://)?discord(?:app\\.com/invite|\\.gg)/(\\S+)", Pattern.CASE_INSENSITIVE);
 
     /**
@@ -839,7 +837,7 @@ public interface Message extends ISnowflake, Formattable
      *         {@link net.dv8tion.jda.core.entities.TextChannel TextChannel}.
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link java.lang.Void}
      */
-    AuditableRestAction<Void> clearReactions();
+    RestAction<Void> clearReactions();
 
     /**
      * This specifies the {@link net.dv8tion.jda.core.entities.MessageType MessageType} of this Message.
@@ -887,9 +885,9 @@ public interface Message extends ISnowflake, Formattable
         private final int height;
         private final int width;
 
-        private final JDA jda;
+        private final JDAImpl jda;
 
-        public Attachment(long id, String url, String proxyUrl, String fileName, int size, int height, int width, JDA jda)
+        public Attachment(long id, String url, String proxyUrl, String fileName, int size, int height, int width, JDAImpl jda)
         {
             this.id = id;
             this.url = url;
@@ -990,6 +988,7 @@ public interface Message extends ISnowflake, Formattable
 
         protected InputStream getInputStream() throws IOException
         {
+            //TODO: use okhttp
             URL url = new URL(getUrl());
             URLConnection conn;
             if (jda.getGlobalProxy() == null)
@@ -1037,6 +1036,7 @@ public interface Message extends ISnowflake, Formattable
         {
             return width;
         }
+
         /**
          * Whether or not this attachment is an Image.
          * <br>Based on the values of getHeight and getWidth being larger than zero.
@@ -1047,6 +1047,5 @@ public interface Message extends ISnowflake, Formattable
         {
             return height > 0 && width > 0;
         }
-
     }
 }

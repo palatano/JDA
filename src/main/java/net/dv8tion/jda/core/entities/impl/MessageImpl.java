@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
 import net.dv8tion.jda.core.utils.MiscUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.util.Args;
+import net.dv8tion.jda.core.utils.Checks;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -114,7 +114,7 @@ public class MessageImpl implements Message
     @Override
     public RestAction<Void> addReaction(Emote emote)
     {
-        Args.notNull(emote, "Emote");
+        Checks.notNull(emote, "Emote");
 
         MessageReaction reaction = reactions.parallelStream()
                 .filter(r -> Objects.equals(r.getEmote().getId(), emote.getId()))
@@ -137,7 +137,7 @@ public class MessageImpl implements Message
     @Override
     public RestAction<Void> addReaction(String unicode)
     {
-        Args.notEmpty(unicode, "Provided Unicode");
+        Checks.notEmpty(unicode, "Provided Unicode");
 
         MessageReaction reaction = reactions.parallelStream()
                 .filter(r -> Objects.equals(r.getEmote().getName(), unicode))
@@ -150,7 +150,7 @@ public class MessageImpl implements Message
     }
 
     @Override
-    public AuditableRestAction<Void> clearReactions()
+    public RestAction<Void> clearReactions()
     {
         if (!isFromType(ChannelType.TEXT))
             throw new IllegalStateException("Cannot clear reactions from a message in a Group or PrivateChannel.");
@@ -689,7 +689,7 @@ public class MessageImpl implements Message
     @Override
     public RestAction<Message> editMessageFormat(String format, Object... args)
     {
-        Args.notBlank(format, "Format String");
+        Checks.notBlank(format, "Format String");
         return editMessage(new MessageBuilder().appendFormat(format, args).build());
     }
 
@@ -734,7 +734,9 @@ public class MessageImpl implements Message
     @Override
     public String toString()
     {
-        return String.format("M:%#s:%.20s(%s)", author, this, getId());
+        return author != null
+            ? String.format("M:%#s:%.20s(%s)", author, this, getId())
+            : String.format("M:%.20s", this); // this message was made using MessageBuilder
     }
 
     public JSONObject toJSONObject()

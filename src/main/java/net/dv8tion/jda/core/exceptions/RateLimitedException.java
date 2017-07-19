@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 
 package net.dv8tion.jda.core.exceptions;
 
-import net.dv8tion.jda.core.requests.Route.CompiledRoute;
+import net.dv8tion.jda.core.requests.Route;
 
 /**
  * Indicates that we received a {@code 429: Too Many Requests} response
@@ -26,7 +26,7 @@ public class RateLimitedException extends Exception
     private final String rateLimitedRoute;
     private final long retryAfter;
 
-    public RateLimitedException(CompiledRoute route, long retryAfter)
+    public RateLimitedException(Route.CompiledRoute route, long retryAfter)
     {
         this(route.getRatelimitRoute(), retryAfter);
     }

@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ public class JDABotImpl implements JDABot
     public RestAction<ApplicationInfo> getApplicationInfo()
     {
         Route.CompiledRoute route = Route.Applications.GET_BOT_APPLICATION.compile();
-        return new RestAction<ApplicationInfo>(getJDA(), route, null)
+        return new RestAction<ApplicationInfo>(getJDA(), route)
         {
             @Override
             protected void handleResponse(Response response, Request<ApplicationInfo> request)

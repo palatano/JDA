@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 package net.dv8tion.jda.core.entities;
 
 import net.dv8tion.jda.core.entities.impl.GameImpl;
-import org.apache.http.util.Args;
+import net.dv8tion.jda.core.utils.Checks;
 
 /**
  * Represents a Discord {@link net.dv8tion.jda.core.entities.Game Game}.
@@ -83,7 +83,7 @@ public interface Game
      */
     static Game of(String name, String url)
     {
-        Args.notEmpty(name, "Provided game name");
+        Checks.notEmpty(name, "Provided game name");
         GameType type;
         if (isValidStreamingUrl(url))
             type = GameType.TWITCH;

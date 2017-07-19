@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package net.dv8tion.jda.core;
 import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl;
 import net.dv8tion.jda.core.entities.impl.message.DataMessage;
-import org.apache.http.util.Args;
+import net.dv8tion.jda.core.utils.Checks;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -268,7 +268,7 @@ public class MessageBuilder implements Appendable
      */
     public MessageBuilder appendFormat(String format, Object... args)
     {
-        Args.notEmpty(format, "Format String");
+        Checks.notEmpty(format, "Format String");
         this.append(String.format(format, args));
         return this;
     }
@@ -601,6 +601,18 @@ public class MessageBuilder implements Appendable
     public StringBuilder getStringBuilder()
     {
         return this.builder;
+    }
+
+    /**
+     * Clears the current builder. Useful for mass message creation.
+     *
+     * @return Returns the {@link net.dv8tion.jda.core.MessageBuilder MessageBuilder} instance. Useful for chaining.
+     */
+    public MessageBuilder clear() {
+        this.builder.setLength(0);
+        this.embed = null;
+        this.isTTS = false;
+        return this;
     }
 
     /**

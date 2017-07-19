@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,10 @@ package net.dv8tion.jda.core.handle;
 
 import net.dv8tion.jda.client.events.group.GroupJoinEvent;
 import net.dv8tion.jda.core.entities.ChannelType;
-import net.dv8tion.jda.core.entities.EntityBuilder;
 import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.events.channel.priv.PrivateChannelCreateEvent;
 import net.dv8tion.jda.core.events.channel.text.TextChannelCreateEvent;
 import net.dv8tion.jda.core.events.channel.voice.VoiceChannelCreateEvent;
-import net.dv8tion.jda.core.requests.GuildLock;
 import org.json.JSONObject;
 
 public class ChannelCreateHandler extends SocketHandler

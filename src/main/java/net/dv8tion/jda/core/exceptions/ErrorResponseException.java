@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -110,7 +110,15 @@ public class ErrorResponseException extends RuntimeException
         JSONObject obj = response.getObject();
         String meaning = errorResponse.getMeaning();
         int code = errorResponse.getCode();
-        if (obj != null)
+        if (response.isError() && response.getException() != null)
+        {
+            // this generally means that an exception occurred trying to
+            //make an http request. e.g.:
+            //SocketTimeoutException/ UnknownHostException
+            code = response.code;
+            meaning = response.getException().getClass().getName();
+        }
+        else if (obj != null)
         {
             if (!obj.isNull("code") || !obj.isNull("message"))
             {
@@ -124,8 +132,14 @@ public class ErrorResponseException extends RuntimeException
                 // This means that neither code or message is provided
                 //In that case we simply put the raw response in place!
                 code = response.code;
-                meaning = response.responseText;
+                meaning = response.getString();
             }
+        }
+        else
+        {
+            // error response body is not JSON
+            code = response.code;
+            meaning = response.getString();
         }
 
         return new ErrorResponseException(errorResponse, response, code, meaning);

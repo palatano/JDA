@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -104,8 +104,11 @@ public class GuildDeleteHandler extends SocketHandler
             }
         }
 
+        long selfId = api.getSelfUser().getIdLong();
         memberIds.forEach(memberId ->
         {
+            if (memberId == selfId)
+                return true; // don't remove selfUser from cache
             UserImpl user = (UserImpl) api.getUserMap().remove(memberId);
             if (user.hasPrivateChannel())
             {

@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,7 +21,6 @@ import net.dv8tion.jda.core.entities.impl.GuildImpl;
 import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.entities.impl.MemberImpl;
 import net.dv8tion.jda.core.events.role.RoleDeleteEvent;
-import net.dv8tion.jda.core.requests.GuildLock;
 import org.json.JSONObject;
 
 public class GuildRoleDeleteHandler extends SocketHandler

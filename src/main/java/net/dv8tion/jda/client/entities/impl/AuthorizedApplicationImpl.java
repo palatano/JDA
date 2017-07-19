@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,7 +22,6 @@ import net.dv8tion.jda.core.requests.Request;
 import net.dv8tion.jda.core.requests.Response;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.Route;
-import net.dv8tion.jda.core.requests.Route.CompiledRoute;
 
 import java.util.Collections;
 import java.util.List;
@@ -53,9 +52,9 @@ public class AuthorizedApplicationImpl implements AuthorizedApplication
     @Override
     public RestAction<Void> delete()
     {
-        CompiledRoute route = Route.Applications.DELETE_AUTHORIZED_APPLICATION.compile(getAuthId());
+        Route.CompiledRoute route = Route.Applications.DELETE_AUTHORIZED_APPLICATION.compile(getAuthId());
 
-        return new RestAction<Void>(this.api, route, null)
+        return new RestAction<Void>(this.api, route)
         {
             @Override
             protected void handleResponse(final Response response, final Request<Void> request)

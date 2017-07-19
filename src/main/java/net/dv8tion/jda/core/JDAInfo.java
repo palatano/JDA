@@ -1,5 +1,5 @@
 /*
- *     Copyright 2015-2017 Austin Keener & Michael Ritter
+ *     Copyright 2015-2017 Austin Keener & Michael Ritter & Florian Spieß
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package net.dv8tion.jda.core;
  */
 public class JDAInfo
 {
+    public static final int DISCORD_REST_VERSION = 6;
     public static final String GITHUB = "https://github.com/DV8FromTheWorld/JDA";
     public static final String VERSION_MAJOR = "@versionMajor@";
     public static final String VERSION_MINOR = "@versionMinor@";
