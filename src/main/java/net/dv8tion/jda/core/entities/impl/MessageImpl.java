@@ -24,6 +24,7 @@ import net.dv8tion.jda.core.entities.*;
 import net.dv8tion.jda.core.exceptions.PermissionException;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import net.dv8tion.jda.core.utils.MiscUtil;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -675,26 +676,26 @@ public class MessageImpl implements Message
     }
 
     @Override
-    public RestAction<Message> editMessage(CharSequence newContent)
+    public MessageAction editMessage(CharSequence newContent)
     {
         return editMessage(new MessageBuilder().append(newContent).build());
     }
 
     @Override
-    public RestAction<Message> editMessage(MessageEmbed newContent)
+    public MessageAction editMessage(MessageEmbed newContent)
     {
         return editMessage(new MessageBuilder().setEmbed(newContent).build());
     }
 
     @Override
-    public RestAction<Message> editMessageFormat(String format, Object... args)
+    public MessageAction editMessageFormat(String format, Object... args)
     {
         Checks.notBlank(format, "Format String");
         return editMessage(new MessageBuilder().appendFormat(format, args).build());
     }
 
     @Override
-    public RestAction<Message> editMessage(Message newContent)
+    public MessageAction editMessage(Message newContent)
     {
         if (!api.getSelfUser().equals(getAuthor()))
             throw new IllegalStateException("Attempted to update message that was not sent by this account. You cannot modify other User's messages!");

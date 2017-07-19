@@ -21,6 +21,7 @@ import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.requests.Requester;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import net.dv8tion.jda.core.utils.Checks;
 import net.dv8tion.jda.core.utils.IOConsumer;
 import net.dv8tion.jda.core.utils.IOUtil;
@@ -496,7 +497,7 @@ public interface Message extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *     <br>The {@link net.dv8tion.jda.core.entities.Message Message} with the updated content
      */
-    RestAction<Message> editMessage(CharSequence newContent);
+    MessageAction editMessage(CharSequence newContent);
 
     /**
      * Edits this Message's content to the provided {@link net.dv8tion.jda.core.entities.MessageEmbed MessageEmbed}.
@@ -528,7 +529,7 @@ public interface Message extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *     <br>The {@link net.dv8tion.jda.core.entities.Message Message} with the updated content
      */
-    RestAction<Message> editMessage(MessageEmbed newContent);
+    MessageAction editMessage(MessageEmbed newContent);
 
     /**
      * Edits this Message's content to the provided format.
@@ -565,7 +566,7 @@ public interface Message extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *     <br>The {@link net.dv8tion.jda.core.entities.Message Message} with the updated content
      */
-    RestAction<Message> editMessageFormat(String format, Object... args);
+    MessageAction editMessageFormat(String format, Object... args);
 
     /**
      * Edits this Message's content to the provided {@link net.dv8tion.jda.core.entities.Message Message}.
@@ -599,7 +600,7 @@ public interface Message extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *     <br>The {@link net.dv8tion.jda.core.entities.Message Message} with the updated content
      */
-    RestAction<Message> editMessage(Message newContent);
+    MessageAction editMessage(Message newContent);
 
     /**
      * Deletes this Message from Discord.

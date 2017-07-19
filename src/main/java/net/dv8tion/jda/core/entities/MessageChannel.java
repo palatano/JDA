@@ -18,24 +18,19 @@ package net.dv8tion.jda.core.entities;
 import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.MessageBuilder;
-import net.dv8tion.jda.core.entities.impl.MessageImpl;
 import net.dv8tion.jda.core.exceptions.AccountTypeException;
 import net.dv8tion.jda.core.requests.Request;
 import net.dv8tion.jda.core.requests.Response;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.Route;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import net.dv8tion.jda.core.requests.restaction.pagination.MessagePaginationAction;
 import net.dv8tion.jda.core.utils.Checks;
 import net.dv8tion.jda.core.utils.MiscUtil;
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.*;
 
@@ -185,7 +180,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      *
      * @see net.dv8tion.jda.core.MessageBuilder
      */
-    default RestAction<Message> sendMessage(CharSequence text)
+    default MessageAction sendMessage(CharSequence text)
     {
         Checks.notEmpty(text, "Provided text for message");
         Checks.check(text.length() <= 2000, "Provided text for message must be less than 2000 characters in length");
@@ -232,7 +227,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *         <br>The newly created Message after it has been sent to Discord.
      */
-    default RestAction<Message> sendMessageFormat(String format, Object... args)
+    default MessageAction sendMessageFormat(String format, Object... args)
     {
         Checks.notEmpty(format, "Format");
         return sendMessage(new MessageBuilder().appendFormat(format, args).build());
@@ -280,7 +275,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @see    net.dv8tion.jda.core.MessageBuilder
      * @see    net.dv8tion.jda.core.EmbedBuilder
      */
-    default RestAction<Message> sendMessage(MessageEmbed embed)
+    default MessageAction sendMessage(MessageEmbed embed)
     {
         Checks.notNull(embed, "Provided embed");
 
@@ -345,37 +340,12 @@ public interface MessageChannel extends ISnowflake, Formattable
      *
      * @see    net.dv8tion.jda.core.MessageBuilder
      */
-    default RestAction<Message> sendMessage(Message msg)
+    default MessageAction sendMessage(Message msg)
     {
         Checks.notNull(msg, "Message");
 
-        if (!msg.getEmbeds().isEmpty())
-        {
-            AccountType type = getJDA().getAccountType();
-            MessageEmbed embed = msg.getEmbeds().get(0);
-            Checks.check(embed.isSendable(type),
-                "Provided Message contains an embed with a length greater than %d characters, which is the max for %s accounts!",
-                    type == AccountType.BOT ? MessageEmbed.EMBED_MAX_LENGTH_BOT : MessageEmbed.EMBED_MAX_LENGTH_CLIENT, type);
-        }
-
         Route.CompiledRoute route = Route.Messages.SEND_MESSAGE.compile(getId());
-        JSONObject json = ((MessageImpl) msg).toJSONObject();
-        return new RestAction<Message>(getJDA(), route, json)
-        {
-            @Override
-            protected void handleResponse(Response response, Request<Message> request)
-            {
-                if (response.isOk())
-                {
-                    Message m = api.getEntityBuilder().createMessage(response.getObject(), MessageChannel.this, false);
-                    request.onSuccess(m);
-                }
-                else
-                {
-                    request.onFailure(response);
-                }
-            }
-        };
+        return new MessageAction(getJDA(), route).apply(msg);
     }
 
     /**
@@ -418,7 +388,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *         <br>The {@link net.dv8tion.jda.core.entities.Message Message} created from this upload.
      */
-    default RestAction<Message> sendFile(File file, Message message)
+    default MessageAction sendFile(File file, Message message)
     {
         Checks.notNull(file, "file");
 
@@ -497,47 +467,17 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *         <br>The {@link net.dv8tion.jda.core.entities.Message Message} created from this upload.
      */
-    default RestAction<Message> sendFile(File file, String fileName, Message message)
+    default MessageAction sendFile(File file, String fileName, Message message)
     {
         Checks.notNull(file, "file");
         Checks.check(file.exists() && file.canRead(),
             "Provided file is either null, doesn't exist or is not readable!");
         Checks.check(file.length() <= Message.MAX_FILE_SIZE,// TODO: deal with Discord Nitro allowing 50MB files.
             "File is to big! Max file-size is 8MB");
-
         Checks.notNull(fileName, "fileName");
 
         Route.CompiledRoute route = Route.Messages.SEND_MESSAGE.compile(getId());
-        MultipartBody.Builder builder = new okhttp3.MultipartBody.Builder()
-                .setType(MultipartBody.FORM);
-
-        builder.addFormDataPart("file", fileName, RequestBody.create(MediaType.parse("application/octet-stream"), file));
-
-        if (message != null)
-        {
-            if (!message.getEmbeds().isEmpty())
-            {
-                AccountType type = getJDA().getAccountType();
-                MessageEmbed embed = message.getEmbeds().get(0);
-                Checks.check(embed.isSendable(type),
-                        "Provided Message contains an embed with a length greater than %d characters, which is the max for %s accounts!",
-                        type == AccountType.BOT ? MessageEmbed.EMBED_MAX_LENGTH_BOT : MessageEmbed.EMBED_MAX_LENGTH_CLIENT, type);
-            }
-
-            builder.addFormDataPart("payload_json", ((MessageImpl) message).toJSONObject().toString());
-        }
-
-        return new RestAction<Message>(getJDA(), route, builder.build())
-        {
-            @Override
-            protected void handleResponse(Response response, Request<Message> request)
-            {
-                if (response.isOk())
-                    request.onSuccess(api.getEntityBuilder().createMessage(response.getObject(), MessageChannel.this, false));
-                else
-                    request.onFailure(response);
-            }
-        };
+        return new MessageAction(getJDA(), route).addFile(file, fileName).apply(message);
     }
 
     /**
@@ -574,42 +514,13 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *         <br>The {@link net.dv8tion.jda.core.entities.Message Message} created from this upload.
      */
-    default RestAction<Message> sendFile(InputStream data, String fileName, Message message)
+    default MessageAction sendFile(InputStream data, String fileName, Message message)
     {
         Checks.notNull(data, "data InputStream");
         Checks.notNull(fileName, "fileName");
 
         Route.CompiledRoute route = Route.Messages.SEND_MESSAGE.compile(getId());
-        MultipartBody.Builder builder = new okhttp3.MultipartBody.Builder()
-                .setType(MultipartBody.FORM);
-
-        builder.addFormDataPart("file", fileName, MiscUtil.createRequestBody(MediaType.parse("application/octet-stream"), data));
-
-        if (message != null)
-        {
-            if (!message.getEmbeds().isEmpty())
-            {
-                AccountType type = getJDA().getAccountType();
-                MessageEmbed embed = message.getEmbeds().get(0);
-                Checks.check(embed.isSendable(type),
-                        "Provided Message contains an embed with a length greater than %d characters, which is the max for %s accounts!",
-                        type == AccountType.BOT ? MessageEmbed.EMBED_MAX_LENGTH_BOT : MessageEmbed.EMBED_MAX_LENGTH_CLIENT, type);
-            }
-
-            builder.addFormDataPart("payload_json", ((MessageImpl) message).toJSONObject().toString());
-        }
-
-        return new RestAction<Message>(getJDA(), route, builder.build())
-        {
-            @Override
-            protected void handleResponse(Response response, Request<Message> request)
-            {
-                if (response.isOk())
-                    request.onSuccess(api.getEntityBuilder().createMessage(response.getObject(), MessageChannel.this, false));
-                else
-                    request.onFailure(response);
-            }
-        };
+        return new MessageAction(getJDA(), route).addFile(data, fileName).apply(message);
     }
 
     /**
@@ -651,44 +562,13 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message Message}
      *         <br>The {@link net.dv8tion.jda.core.entities.Message Message} created from this upload.
      */
-    default RestAction<Message> sendFile(byte[] data, String fileName, Message message)
+    default MessageAction sendFile(byte[] data, String fileName, Message message)
     {
         Checks.notNull(data, "file data[]");
         Checks.notNull(fileName, "fileName");
 
-        Checks.check(data.length <= Message.MAX_FILE_SIZE,   //8MB
-                "Provided data is too large! Max file-size is 8MB (%d)", Message.MAX_FILE_SIZE);
-
         Route.CompiledRoute route = Route.Messages.SEND_MESSAGE.compile(getId());
-        MultipartBody.Builder builder = new okhttp3.MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("file", fileName, RequestBody.create(MediaType.parse("application/octet-stream"), data));
-
-        if (message != null)
-        {
-            if (!message.getEmbeds().isEmpty())
-            {
-                AccountType type = getJDA().getAccountType();
-                MessageEmbed embed = message.getEmbeds().get(0);
-                Checks.check(embed.isSendable(type),
-                        "Provided Message contains an embed with a length greater than %d characters, which is the max for %s accounts!",
-                        type == AccountType.BOT ? MessageEmbed.EMBED_MAX_LENGTH_BOT : MessageEmbed.EMBED_MAX_LENGTH_CLIENT, type);
-            }
-
-            builder.addFormDataPart("payload_json", ((MessageImpl) message).toJSONObject().toString());
-        }
-
-        return new RestAction<Message>(getJDA(), route, builder.build())
-        {
-            @Override
-            protected void handleResponse(Response response, Request<Message> request)
-            {
-                if (response.isOk())
-                    request.onSuccess(api.getEntityBuilder().createMessage(response.getObject(), MessageChannel.this, false));
-                else
-                    request.onFailure(response);
-            }
-        };
+        return new MessageAction(getJDA(), route).addFile(data, fileName).apply(message);
     }
 
     /**
@@ -1789,7 +1669,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message after it has been sent to Discord.
      */
-    default RestAction<Message> editMessageById(String messageId, CharSequence newContent)
+    default MessageAction editMessageById(String messageId, CharSequence newContent)
     {
         Checks.notEmpty(newContent, "Provided message content");
         Checks.check(newContent.length() <= 2000, "Provided newContent length must be 2000 or less characters.");
@@ -1839,7 +1719,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message after it has been sent to Discord.
      */
-    default RestAction<Message> editMessageById(long messageId, CharSequence newContent)
+    default MessageAction editMessageById(long messageId, CharSequence newContent)
     {
         return editMessageById(Long.toUnsignedString(messageId), newContent);
     }
@@ -1887,37 +1767,13 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message
      */
-    default RestAction<Message> editMessageById(String messageId, Message newContent)
+    default MessageAction editMessageById(String messageId, Message newContent)
     {
         Checks.notEmpty(messageId, "messageId");
         Checks.notNull(newContent, "message");
 
-        if (!newContent.getEmbeds().isEmpty())
-        {
-            AccountType type = getJDA().getAccountType();
-            MessageEmbed embed = newContent.getEmbeds().get(0);
-            Checks.check(embed.isSendable(type),
-                    "Provided Message contains an embed with a length greater than %d characters, which is the max for %s accounts!",
-                    type == AccountType.BOT ? MessageEmbed.EMBED_MAX_LENGTH_BOT : MessageEmbed.EMBED_MAX_LENGTH_CLIENT, type);
-        }
-        JSONObject json = ((MessageImpl) newContent).toJSONObject();
         Route.CompiledRoute route = Route.Messages.EDIT_MESSAGE.compile(getId(), messageId);
-        return new RestAction<Message>(getJDA(), route, json)
-        {
-            @Override
-            protected void handleResponse(Response response, Request<Message> request)
-            {
-                if (response.isOk())
-                {
-                    Message m = api.getEntityBuilder().createMessage(response.getObject(), MessageChannel.this, false);
-                    request.onSuccess(m);
-                }
-                else
-                {
-                    request.onFailure(response);
-                }
-            }
-        };
+        return new MessageAction(getJDA(), route).apply(newContent);
     }
 
     /**
@@ -1963,7 +1819,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message
      */
-    default RestAction<Message> editMessageById(long messageId, Message newContent)
+    default MessageAction editMessageById(long messageId, Message newContent)
     {
         return editMessageById(Long.toUnsignedString(messageId), newContent);
     }
@@ -2013,7 +1869,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message
      */
-    default RestAction<Message> editMessageFormatById(String messageId, String format, Object... args)
+    default MessageAction editMessageFormatById(String messageId, String format, Object... args)
     {
         Checks.notBlank(format, "Format String");
         return editMessageById(messageId, new MessageBuilder().appendFormat(format, args).build());
@@ -2064,7 +1920,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message
      */
-    default RestAction<Message> editMessageFormatById(long messageId, String format, Object... args)
+    default MessageAction editMessageFormatById(long messageId, String format, Object... args)
     {
         Checks.notBlank(format, "Format String");
         return editMessageById(messageId, new MessageBuilder().appendFormat(format, args).build());
@@ -2114,7 +1970,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message
      */
-    default RestAction<Message> editMessageById(String messageId, MessageEmbed newEmbed)
+    default MessageAction editMessageById(String messageId, MessageEmbed newEmbed)
     {
         return editMessageById(messageId, new MessageBuilder(newEmbed).build());
     }
@@ -2163,7 +2019,7 @@ public interface MessageChannel extends ISnowflake, Formattable
      * @return {@link net.dv8tion.jda.core.requests.RestAction RestAction} - Type: {@link net.dv8tion.jda.core.entities.Message}
      *         <br>The modified Message
      */
-    default RestAction<Message> editMessageById(long messageId, MessageEmbed newEmbed)
+    default MessageAction editMessageById(long messageId, MessageEmbed newEmbed)
     {
         return editMessageById(Long.toUnsignedString(messageId), newEmbed);
     }

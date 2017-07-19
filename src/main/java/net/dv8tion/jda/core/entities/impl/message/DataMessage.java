@@ -23,6 +23,7 @@ import net.dv8tion.jda.core.entities.impl.MessageEmbedImpl;
 import net.dv8tion.jda.core.entities.impl.MessageImpl;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import org.json.JSONObject;
 
 import java.util.Collections;
@@ -143,25 +144,25 @@ public class DataMessage extends MessageImpl implements Message
     }
 
     @Override
-    public RestAction<Message> editMessage(CharSequence newContent)
+    public MessageAction editMessage(CharSequence newContent)
     {
         throw new UnsupportedOperationException(UNSUPPORTED);
     }
 
     @Override
-    public RestAction<Message> editMessage(MessageEmbed newContent)
+    public MessageAction editMessage(MessageEmbed newContent)
     {
         throw new UnsupportedOperationException(UNSUPPORTED);
     }
 
     @Override
-    public RestAction<Message> editMessageFormat(String format, Object... args)
+    public MessageAction editMessageFormat(String format, Object... args)
     {
         throw new UnsupportedOperationException(UNSUPPORTED);
     }
 
     @Override
-    public RestAction<Message> editMessage(Message newContent)
+    public MessageAction editMessage(Message newContent)
     {
         throw new UnsupportedOperationException(UNSUPPORTED);
     }

@@ -25,6 +25,7 @@ import net.dv8tion.jda.core.requests.Response;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.Route;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.core.requests.restaction.MessageAction;
 import net.dv8tion.jda.core.utils.MiscUtil;
 import net.dv8tion.jda.core.utils.Checks;
 import org.json.JSONArray;
@@ -221,7 +222,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannelImpl> implem
     }
 
     @Override
-    public RestAction<Message> sendMessage(Message msg)
+    public MessageAction sendMessage(Message msg)
     {
         Checks.notNull(msg, "Message");
 
@@ -236,7 +237,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannelImpl> implem
     }
 
     @Override
-    public RestAction<Message> sendFile(InputStream data, String fileName, Message message)
+    public MessageAction sendFile(InputStream data, String fileName, Message message)
     {
         checkVerification();
         checkPermission(Permission.MESSAGE_READ);
@@ -248,7 +249,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannelImpl> implem
     }
 
     @Override
-    public RestAction<Message> sendFile(byte[] data, String fileName, Message message)
+    public MessageAction sendFile(byte[] data, String fileName, Message message)
     {
         checkVerification();
         checkPermission(Permission.MESSAGE_READ);
@@ -359,7 +360,7 @@ public class TextChannelImpl extends AbstractChannelImpl<TextChannelImpl> implem
     }
 
     @Override
-    public RestAction<Message> editMessageById(String id, Message newContent)
+    public MessageAction editMessageById(String id, Message newContent)
     {
         Checks.notNull(newContent, "Message");
 
