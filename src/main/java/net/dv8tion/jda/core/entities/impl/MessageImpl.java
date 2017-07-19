@@ -249,7 +249,7 @@ public class MessageImpl implements Message
     @Override
     public List<Member> getMentionedMembers(Guild guild)
     {
-        Args.notNull(guild, "Guild");
+        Checks.notNull(guild, "Guild");
         List<User> mentionedUsers = getMentionedUsers();
         List<Member> members = new ArrayList<>();
         for (User user : mentionedUsers)
@@ -316,7 +316,7 @@ public class MessageImpl implements Message
     @Override
     public boolean isMentioned(IMentionable mentionable, MentionType... types)
     {
-        Args.notNull(types, "Mention Types");
+        Checks.notNull(types, "Mention Types");
         if (types.length == 0)
             return isMentioned(mentionable, MentionType.values());
         for (MentionType type : types)

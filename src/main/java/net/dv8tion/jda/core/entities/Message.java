@@ -21,8 +21,15 @@ import net.dv8tion.jda.core.entities.impl.JDAImpl;
 import net.dv8tion.jda.core.requests.Requester;
 import net.dv8tion.jda.core.requests.RestAction;
 import net.dv8tion.jda.core.requests.restaction.AuditableRestAction;
+import net.dv8tion.jda.core.utils.Checks;
+import net.dv8tion.jda.core.utils.IOConsumer;
+import net.dv8tion.jda.core.utils.IOUtil;
+import okhttp3.Call;
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,6 +38,7 @@ import java.nio.file.Paths;
 import java.time.OffsetDateTime;
 import java.util.Formattable;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 /**
@@ -899,6 +907,16 @@ public interface Message extends ISnowflake, Formattable
             this.jda = jda;
         }
 
+        /**
+         * The corresponding JDA instance for this Attachment
+         *
+         * @return The corresponding JDA instance for this Attachment
+         */
+        public JDA getJDA()
+        {
+            return jda;
+        }
+
         @Override
         public long getIdLong()
         {
@@ -958,10 +976,9 @@ public interface Message extends ISnowflake, Formattable
         {
             if (!isImage())
                 throw new IllegalStateException("Cannot create an Icon out of this attachment. This is not an image.");
-            try (InputStream in = getInputStream())
-            {
-                return Icon.from(in);
-            }
+            AtomicReference<Icon> icon = new AtomicReference<>();
+            withInputStream((in) -> icon.set(Icon.from(in)));
+            return icon.get();
         }
 
         /**
@@ -974,9 +991,9 @@ public interface Message extends ISnowflake, Formattable
          */
         public boolean download(File file)
         {
-            try (InputStream in = getInputStream())
+            try
             {
-                Files.copy(in, Paths.get(file.getAbsolutePath()));
+                withInputStream((in) -> Files.copy(in, Paths.get(file.getAbsolutePath())));
                 return true;
             }
             catch (Exception e)
@@ -986,22 +1003,64 @@ public interface Message extends ISnowflake, Formattable
             return false;
         }
 
-        protected InputStream getInputStream() throws IOException
+        /**
+         * Creates a copy of the {@link java.io.InputStream InputStream} that is created using an {@link okhttp3.OkHttpClient OkHttpClient}.
+         *
+         * <p>You can access the input stream directly using {@link #withInputStream(net.dv8tion.jda.core.utils.IOConsumer) withInputStream(IOConsumer)}
+         * which will have an open input stream available within the consumer scope. The stream will be closed once that method returns.
+         *
+         * @throws java.io.IOException
+         *         If an IO error occurs trying to read from the opened HTTP channel
+         *
+         * @return InputStream copy of the response body for this Attachment
+         */
+        public InputStream getInputStream() throws IOException
         {
-            //TODO: use okhttp
-            URL url = new URL(getUrl());
-            URLConnection conn;
-            if (jda.getGlobalProxy() == null)
+            final OkHttpClient client = jda.getRequester().getHttpClient();
+            final Request request = new Request.Builder()
+                        .url(getUrl())
+                        .addHeader("user-agent", Requester.USER_AGENT)
+                        .addHeader("accept-encoding", "gzip")
+                        .build();
+            Call call = client.newCall(request);
+            try (Response response = call.execute())
             {
-                conn = url.openConnection();
+                // creates a copy in order to properly close the response
+                InputStream in = Requester.getBody(response);
+                return new ByteArrayInputStream(IOUtil.readFully(in));
             }
-            else
+        }
+
+        /**
+         * Allows to access the InputStream that is available from the HTTP {@link okhttp3.Response Response}
+         * to be used without having to copy it.
+         * <br>Unlike {@link #getInputStream()} this does not return a full copy of the input stream.
+         * Instead this method will provide the InputStream data in the specified consumer in which it is still accessible.
+         *
+         * <p><b>When this method returns the InputStream will be closed accordingly!</b>
+         *
+         * @param  then
+         *         Not-null {@link net.dv8tion.jda.core.utils.IOConsumer IOConsumer} to accept the InputStream
+         *
+         * @throws java.lang.IllegalArgumentException
+         *         If the provided IOConsumer is {@code null}
+         * @throws IOException
+         *         If an IOException occurs within the IOConsumer or while opening an HTTP channel
+         */
+        public void withInputStream(IOConsumer<InputStream> then) throws IOException
+        {
+            Checks.notNull(then, "Consumer");
+            final OkHttpClient client = jda.getRequester().getHttpClient();
+            final Request request = new Request.Builder()
+                .url(getUrl())
+                .addHeader("user-agent", Requester.USER_AGENT)
+                .addHeader("accept-encoding", "gzip")
+                .build();
+            Call call = client.newCall(request);
+            try (Response response = call.execute())
             {
-                conn = url.openConnection(new Proxy(Proxy.Type.HTTP,
-                        new InetSocketAddress(jda.getGlobalProxy().getAddress(), jda.getGlobalProxy().getPort())));
+                then.accept(Requester.getBody(response));
             }
-            conn.addRequestProperty("user-agent", Requester.USER_AGENT);
-            return conn.getInputStream();
         }
 
         /**

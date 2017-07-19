@@ -178,7 +178,7 @@ public class EmbedBuilder
      */
     public boolean isValidLength(AccountType type)
     {
-        Args.notNull(type, "AccountType");
+        Checks.notNull(type, "AccountType");
         final int length = length();
         switch (type)
         {
