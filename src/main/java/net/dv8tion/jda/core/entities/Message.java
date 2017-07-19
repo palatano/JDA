@@ -73,6 +73,8 @@ import java.util.regex.Pattern;
 public interface Message extends ISnowflake, Formattable
 {
     int MAX_FILE_SIZE = 8 << 20; // 8mb
+    int MAX_FILE_AMOUNT = 10;
+    int MAX_CONTENT_LENGTH = 2000;
     Pattern INVITE_PATTERN = Pattern.compile("(?:https?://)?discord(?:app\\.com/invite|\\.gg)/(\\S+)", Pattern.CASE_INSENSITIVE);
 
     /**

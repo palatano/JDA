@@ -103,8 +103,10 @@ public class MessageAction extends RestAction<Message> implements Appendable
     {
         if (content == null || content.isEmpty())
             this.content.setLength(0);
-        else
+        else if (content.length() <= Message.MAX_CONTENT_LENGTH)
             this.content.replace(0, this.content.length(), content);
+        else
+            throw new IllegalArgumentException("A message may not exceed 2000 characters. Please limit your input!");
         return this;
     }
 
@@ -132,6 +134,8 @@ public class MessageAction extends RestAction<Message> implements Appendable
     @Override
     public MessageAction append(CharSequence csq, int start, int end)
     {
+        if (content.length() + end - start > Message.MAX_CONTENT_LENGTH)
+            throw new IllegalArgumentException("A message may not exceed 2000 characters. Please limit your input!");
         content.append(csq, start, end);
         return this;
     }
@@ -139,6 +143,8 @@ public class MessageAction extends RestAction<Message> implements Appendable
     @Override
     public MessageAction append(char c)
     {
+        if (content.length() == Message.MAX_CONTENT_LENGTH)
+            throw new IllegalArgumentException("A message may not exceed 2000 characters. Please limit your input!");
         content.append(c);
         return this;
     }
@@ -154,6 +160,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         checkEdit("Cannot add files to an existing message! Edit-Message does not support this operation!");
         Checks.notNull(data, "Data");
         Checks.notBlank(name, "Name");
+        checkFileAmount();
         files.put(name, data);
         return this;
     }
@@ -164,6 +171,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         Checks.notNull(data, "Data");
         Checks.notBlank(name, "Name");
         Checks.check(data.length <= Message.MAX_FILE_SIZE, "File may not exceed the maximum file length of 8MB!");
+        checkFileAmount();
         files.put(name, new ByteArrayInputStream(data));
         return this;
     }
@@ -182,6 +190,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         Checks.check(file.exists() && file.canRead(),
             "Provided file either does not exist or cannot be read from!");
         Checks.check(file.length() <= Message.MAX_FILE_SIZE, "File may not exceed the maximum file length of 8MB!");
+        checkFileAmount();
         try
         {
             files.put(name, new FileInputStream(file));
@@ -203,16 +212,6 @@ public class MessageAction extends RestAction<Message> implements Appendable
     {
         this.override = bool;
         return this;
-    }
-
-    @Override
-    protected RequestBody finalizeData()
-    {
-        if (!files.isEmpty())
-            return asMultipart();
-        else if (!isEmpty())
-            return RequestBody.create(MediaType.parse("application/json"), getJSON().toString());
-        throw new IllegalStateException("Cannot build a message without content!");
     }
 
     protected RequestBody asMultipart()
@@ -267,10 +266,26 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return ((MessageEmbedImpl) embed).toJSONObject();
     }
 
+    protected void checkFileAmount()
+    {
+        if (files.size() >= Message.MAX_FILE_AMOUNT)
+            throw new IllegalStateException("Cannot add more than " + Message.MAX_FILE_AMOUNT + " files!");
+    }
+
     protected void checkEdit(String message)
     {
         if (isEdit())
             throw new IllegalStateException(message);
+    }
+
+    @Override
+    protected RequestBody finalizeData()
+    {
+        if (!files.isEmpty())
+            return asMultipart();
+        else if (!isEmpty())
+            return RequestBody.create(MediaType.parse("application/json"), getJSON().toString());
+        throw new IllegalStateException("Cannot build a message without content!");
     }
 
     @Override

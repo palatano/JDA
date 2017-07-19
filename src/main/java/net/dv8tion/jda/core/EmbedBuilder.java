@@ -41,9 +41,8 @@ public class EmbedBuilder
     public final static Pattern URL_PATTERN = Pattern.compile("\\s*(https?|attachment)://.+\\..{2,}\\s*", Pattern.CASE_INSENSITIVE);
 
     private final List<MessageEmbed.Field> fields = new LinkedList<>();
-    private String url;
-    private String title;
     private StringBuilder description = new StringBuilder();
+    private String url, title;
     private OffsetDateTime timestamp;
     private Color color;
     private MessageEmbed.Thumbnail thumbnail;
@@ -117,6 +116,27 @@ public class EmbedBuilder
 
         return new MessageEmbedImpl(url, title, description, EmbedType.RICH, timestamp,
                 color, thumbnail, null, author, null, footer, image, fields);
+    }
+
+    /**
+     * Resets this builder to default state.
+     * <br>All parts will be either empty or null after this method has returned.
+     *
+     * @return The current EmbedBuilder with default values
+     */
+    public EmbedBuilder clear()
+    {
+        description.setLength(0);
+        fields.clear();
+        url = null;
+        title = null;
+        timestamp = null;
+        color = null;
+        thumbnail = null;
+        author = null;
+        footer = null;
+        image = null;
+        return this;
     }
 
     /**
@@ -260,7 +280,7 @@ public class EmbedBuilder
     /**
      * The {@link java.lang.StringBuilder StringBuilder} used to
      * build the description for the embed.
-     * <br>Note: To reset the description use {@link #setDescription(CharSequence) setDescription(null)}
+     * <br>Note: To reset the description use {@link #setDescription(String) setDescription(null)}
      *
      * @return StringBuilder with current description context
      */
@@ -282,17 +302,17 @@ public class EmbedBuilder
      *
      * @return the builder after the description has been set
      */
-    public EmbedBuilder setDescription(CharSequence description)
+    public EmbedBuilder setDescription(String description)
     {
         if (description == null || description.length() < 1)
         {
-            this.description = new StringBuilder();
+            this.description.setLength(0);
         }
         else
         {
             Checks.check(description.length() <= MessageEmbed.TEXT_MAX_LENGTH,
                 "Description cannot be longer than %d characters.", MessageEmbed.TEXT_MAX_LENGTH);
-            this.description = new StringBuilder(description);
+            this.description.replace(0, this.description.length(), description);
         }
         return this;
     }

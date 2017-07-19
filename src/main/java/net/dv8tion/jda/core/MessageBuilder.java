@@ -338,7 +338,7 @@ public class MessageBuilder implements Appendable
         String message = builder.toString();
         if (this.isEmpty())
             throw new IllegalStateException("Cannot build a Message with no content. (You never added any content to the message)");
-        if (message.length() > 2000)
+        if (message.length() > Message.MAX_CONTENT_LENGTH)
             throw new IllegalStateException("Cannot build a Message with more than 2000 characters. Please limit your input.");
 
         return new DataMessage(isTTS, message, nonce, embed);
