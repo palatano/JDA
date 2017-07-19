@@ -41,7 +41,7 @@ public class EmbedBuilder
     public final static Pattern URL_PATTERN = Pattern.compile("\\s*(https?|attachment)://.+\\..{2,}\\s*", Pattern.CASE_INSENSITIVE);
 
     private final List<MessageEmbed.Field> fields = new LinkedList<>();
-    private StringBuilder description = new StringBuilder();
+    private final StringBuilder description = new StringBuilder();
     private String url, title;
     private OffsetDateTime timestamp;
     private Color color;
@@ -60,10 +60,10 @@ public class EmbedBuilder
     {
         if (builder != null)
         {
+            setDescription(builder.description.toString());
             this.fields.addAll(builder.fields);
             this.url = builder.url;
             this.title = builder.title;
-            this.description = builder.description;
             this.timestamp = builder.timestamp;
             this.color = builder.color;
             this.thumbnail = builder.thumbnail;

@@ -37,7 +37,7 @@ import java.util.Map;
 
 public class MessageAction extends RestAction<Message> implements Appendable
 {
-    protected Map<String, InputStream> files = new HashMap<>();
+    protected final Map<String, InputStream> files = new HashMap<>();
     protected StringBuilder content = new StringBuilder();
     protected MessageEmbed embed = null;
     protected String nonce = null;
@@ -48,7 +48,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         super(api, route);
     }
 
-    public MessageAction apply(Message message)
+    public MessageAction apply(final Message message)
     {
         if (message == null)
             return this;
@@ -82,7 +82,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return finalizeRoute().getMethod() == Method.PATCH;
     }
 
-    public MessageAction tts(boolean isTTS)
+    public MessageAction tts(final boolean isTTS)
     {
         this.tts = isTTS;
         return this;
@@ -93,13 +93,13 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return content(null).nonce(null).embed(null).tts(false).override(false).clearFiles();
     }
 
-    public MessageAction nonce(String nonce)
+    public MessageAction nonce(final String nonce)
     {
         this.nonce = nonce;
         return this;
     }
 
-    public MessageAction content(String content)
+    public MessageAction content(final String content)
     {
         if (content == null || content.isEmpty())
             this.content.setLength(0);
@@ -110,13 +110,13 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return this;
     }
 
-    public MessageAction embed(MessageEmbed embed)
+    public MessageAction embed(final MessageEmbed embed)
     {
         if (embed != null)
         {
             if (!(embed instanceof MessageEmbedImpl))
                 throw new IllegalArgumentException("Cannot use provided embed implementation!");
-            AccountType type = getJDA().getAccountType();
+            final AccountType type = getJDA().getAccountType();
             Checks.check(embed.isSendable(type),
                 "Provided Message contains an embed with a length greater than %d characters, which is the max for %s accounts!",
                 type == AccountType.BOT ? MessageEmbed.EMBED_MAX_LENGTH_BOT : MessageEmbed.EMBED_MAX_LENGTH_CLIENT, type);
@@ -126,13 +126,13 @@ public class MessageAction extends RestAction<Message> implements Appendable
     }
 
     @Override
-    public MessageAction append(CharSequence csq)
+    public MessageAction append(final CharSequence csq)
     {
         return append(csq, 0, csq.length());
     }
 
     @Override
-    public MessageAction append(CharSequence csq, int start, int end)
+    public MessageAction append(final CharSequence csq, final int start, final int end)
     {
         if (content.length() + end - start > Message.MAX_CONTENT_LENGTH)
             throw new IllegalArgumentException("A message may not exceed 2000 characters. Please limit your input!");
@@ -141,7 +141,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
     }
 
     @Override
-    public MessageAction append(char c)
+    public MessageAction append(final char c)
     {
         if (content.length() == Message.MAX_CONTENT_LENGTH)
             throw new IllegalArgumentException("A message may not exceed 2000 characters. Please limit your input!");
@@ -149,13 +149,13 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return this;
     }
 
-    public MessageAction appendFormat(String format, Object... args)
+    public MessageAction appendFormat(final String format, final Object... args)
     {
         this.content.append(String.format(format, args));
         return this;
     }
 
-    public MessageAction addFile(InputStream data, String name)
+    public MessageAction addFile(final InputStream data, final String name)
     {
         checkEdit("Cannot add files to an existing message! Edit-Message does not support this operation!");
         Checks.notNull(data, "Data");
@@ -165,7 +165,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return this;
     }
 
-    public MessageAction addFile(byte[] data, String name)
+    public MessageAction addFile(final byte[] data, final String name)
     {
         checkEdit("Cannot add files to an existing message! Edit-Message does not support this operation!");
         Checks.notNull(data, "Data");
@@ -176,13 +176,13 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return this;
     }
 
-    public MessageAction addFile(File file)
+    public MessageAction addFile(final File file)
     {
         Checks.notNull(file, "File");
         return addFile(file, file.getName());
     }
 
-    public MessageAction addFile(File file, String name)
+    public MessageAction addFile(final File file, final String name)
     {
         checkEdit("Cannot add files to an existing message! Edit-Message does not support this operation!");
         Checks.notNull(file, "File");
@@ -208,7 +208,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return this;
     }
 
-    public MessageAction override(boolean bool)
+    public MessageAction override(final boolean bool)
     {
         this.override = bool;
         return this;
@@ -231,7 +231,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
 
     protected JSONObject getJSON()
     {
-        JSONObject obj = new JSONObject();
+        final JSONObject obj = new JSONObject();
         if (override)
         {
             if (embed == null)
@@ -261,7 +261,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
         return obj;
     }
 
-    protected static JSONObject getJSONEmbed(MessageEmbed embed)
+    protected static JSONObject getJSONEmbed(final MessageEmbed embed)
     {
         return ((MessageEmbedImpl) embed).toJSONObject();
     }
@@ -272,7 +272,7 @@ public class MessageAction extends RestAction<Message> implements Appendable
             throw new IllegalStateException("Cannot add more than " + Message.MAX_FILE_AMOUNT + " files!");
     }
 
-    protected void checkEdit(String message)
+    protected void checkEdit(final String message)
     {
         if (isEdit())
             throw new IllegalStateException(message);
